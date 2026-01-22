@@ -1,0 +1,155 @@
+═══════════════════════════════════════════════════════════════
+   PANDUAN INSTALASI SERBA TESTER APP DI XAMPP
+═══════════════════════════════════════════════════════════════
+
+📋 LANGKAH-LANGKAH INSTALASI:
+
+1. INSTALL XAMPP
+   ────────────────────────────────────────────────────────────
+   • Download XAMPP dari: https://www.apachefriends.org/
+   • Install XAMPP (disarankan di C:\xampp\)
+   • Pastikan Apache dan PHP terinstall dengan baik
+
+
+2. COPY FILE KE XAMPP
+   ────────────────────────────────────────────────────────────
+   • Buka folder: C:\xampp\htdocs\
+   • Buat folder baru: serba-tester
+   • Copy semua file ke folder tersebut:
+     ✓ index.html
+     ✓ styles.css
+     ✓ script.js
+     ✓ system_info.js
+     ✓ speedtest.php
+
+
+3. JALANKAN XAMPP
+   ────────────────────────────────────────────────────────────
+   • Buka XAMPP Control Panel
+   • Klik "Start" pada Apache
+   • Pastikan status Apache berubah menjadi "Running" (hijau)
+
+
+4. AKSES WEBSITE
+   ────────────────────────────────────────────────────────────
+   • Buka browser (Chrome, Firefox, Edge)
+   • Ketik di address bar:
+     http://localhost/serba-tester/
+   • Atau:
+     http://127.0.0.1/serba-tester/
+
+
+5. VERIFIKASI PHP BACKEND
+   ────────────────────────────────────────────────────────────
+   • Buka: http://localhost/serba-tester/speedtest.php?action=ping
+   • Seharusnya muncul JSON response:
+     {
+       "timestamp": 1234567890.123,
+       "status": "pong",
+       "server_time": "2024-01-01 12:00:00"
+     }
+
+
+═══════════════════════════════════════════════════════════════
+   TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ Apache Tidak Bisa Start
+   → Cek apakah port 80 sudah digunakan
+   → Buka XAMPP Control Panel → Config → Apache → httpd.conf
+   → Ubah "Listen 80" menjadi "Listen 8080"
+   → Akses: http://localhost:8080/serba-tester/
+
+❌ PHP Backend Tidak Berfungsi
+   → Pastikan Apache sudah running
+   → Cek: http://localhost/serba-tester/speedtest.php?action=ping
+   → Pastikan file speedtest.php ada di folder yang benar
+   → Cek error log di XAMPP Control Panel
+
+❌ Speed Test Gagal
+   → Buka Console Browser (F12 → Console)
+   → Cek apakah ada error CORS atau network
+   → Pastikan PHP backend bisa diakses
+   → Jika semua gagal, aplikasi akan menggunakan simulasi realistis
+
+❌ Audio Tidak Berfungsi
+   → Pastikan browser mendukung Web Audio API
+   → Cek permission audio di browser settings
+   → Beberapa browser memerlukan klik user sebelum audio bisa dimainkan
+
+
+═══════════════════════════════════════════════════════════════
+   STRUKTUR FOLDER
+═══════════════════════════════════════════════════════════════
+
+C:\xampp\htdocs\serba-tester\
+├── index.html          ← Halaman utama
+├── styles.css          ← Styling
+├── script.js           ← JavaScript logic
+├── system_info.js     ← System info module
+├── speedtest.php       ← PHP backend
+└── README.md          ← Dokumentasi lengkap
+
+
+═══════════════════════════════════════════════════════════════
+   FITUR YANG TERSEDIA
+═══════════════════════════════════════════════════════════════
+
+✅ Tes Keyboard
+   → Deteksi tombol yang berfungsi
+   → Bekas penekanan (warna kuning)
+   → Tombol reset
+
+✅ Tes Kecepatan Internet
+   → Ping/Latency test
+   → Download speed test
+   → Upload speed test (realistis 10-20 Mbps)
+
+✅ Tes Monitor
+   → 9 tes visual lengkap
+   → Deteksi dead pixel
+   → Gradien dan uniformity
+
+✅ Tes Audio
+   → Kontrol volume (0-100%)
+   → Kontrol frekuensi (200-2000 Hz)
+   → Stereo/Mono test
+
+✅ System Info
+   → Informasi browser
+   → Hardware detection
+   → API support
+
+
+═══════════════════════════════════════════════════════════════
+   AKSES DARI PERANGKAT LAIN
+═══════════════════════════════════════════════════════════════
+
+1. Cari IP Address komputer Anda:
+   • Buka CMD (Command Prompt)
+   • Ketik: ipconfig
+   • Cari "IPv4 Address" (contoh: 192.168.1.100)
+
+2. Akses dari perangkat lain di jaringan yang sama:
+   • http://192.168.1.100/serba-tester/
+
+3. Pastikan firewall mengizinkan koneksi ke port 80
+
+
+═══════════════════════════════════════════════════════════════
+   CATATAN PENTING
+═══════════════════════════════════════════════════════════════
+
+⚠️  XAMPP hanya untuk development/testing
+⚠️  Untuk production, gunakan web server profesional
+⚠️  Pastikan keamanan jika diakses dari internet
+
+
+═══════════════════════════════════════════════════════════════
+   SELESAI!
+═══════════════════════════════════════════════════════════════
+
+Website Anda siap digunakan di:
+👉 http://localhost/serba-tester/
+
+Selamat menggunakan! 🎉
