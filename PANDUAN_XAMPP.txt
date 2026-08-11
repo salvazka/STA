@@ -20,6 +20,7 @@
      ✓ styles.css
      ✓ script.js
      ✓ system_info.js
+     ✓ logo.svg
      ✓ speedtest.php
 
 
@@ -96,29 +97,46 @@ C:\xampp\htdocs\serba-tester\
 ═══════════════════════════════════════════════════════════════
 
 ✅ Tes Keyboard
-   → Deteksi tombol yang berfungsi
-   → Bekas penekanan (warna kuning)
-   → Tombol reset
+   → Layout penuh 104 tombol termasuk numpad
+   → Meter cakupan dalam persen
+   → Readout kode tombol terakhir + tombol reset
 
 ✅ Tes Kecepatan Internet
-   → Ping/Latency test
+   → Ping/latency test (6 sampel + jitter)
    → Download speed test
-   → Upload speed test (realistis 10-20 Mbps)
+   → Upload speed test
+   → Gauge SVG + stepper fase
 
 ✅ Tes Monitor
-   → 9 tes visual lengkap
-   → Deteksi dead pixel
-   → Gradien dan uniformity
+   → 12 pola visual lengkap
+   → Deteksi dead/stuck pixel
+   → Gradien, banding, dan uniformity
+   → Mode layar penuh
 
 ✅ Tes Audio
    → Kontrol volume (0-100%)
-   → Kontrol frekuensi (200-2000 Hz)
-   → Stereo/Mono test
+   → Kontrol frekuensi (200-2000 Hz) + preset
+   → Pilihan bentuk gelombang (sine/square/triangle/saw)
+   → Visualizer gelombang real-time
+   → Tes kanal kiri / kanan / stereo
 
 ✅ System Info
-   → Informasi browser
-   → Hardware detection
-   → API support
+   → Informasi browser & engine
+   → Layar + estimasi refresh rate
+   → Hardware & GPU renderer
+   → Dukungan Web API
+   → Export / copy JSON
+
+
+═══════════════════════════════════════════════════════════════
+   PINTASAN KEYBOARD
+═══════════════════════════════════════════════════════════════
+
+   Alt + 1 … 5    Pindah antar modul
+   Alt + T        Ganti tema terang / gelap
+   ← / → / Space  Navigasi pola pada tes monitor
+   F              Layar penuh (saat tes monitor)
+   Esc            Keluar dari layar penuh
 
 
 ═══════════════════════════════════════════════════════════════

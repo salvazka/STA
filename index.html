@@ -1,297 +1,580 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serba Tester App - Uji Perangkat Keras & Internet</title>
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Konfigurasi Tailwind untuk warna dan font yang lebih baik -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-blue': '#3b82f6', // blue-500
-                        'primary-dark': '#1f2937', // gray-800
-                        'accent-red': '#ef4444', // red-500
-                        'accent-green': '#10b981', // green-500
-                        'light-bg': '#f9fafb', // gray-50
-                        'card-bg': '#ffffff',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'custom': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                        'xl-dark': '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="bg-light-bg min-h-screen p-4 sm:p-8 flex flex-col items-center font-sans">
+    <title>Serba Tester — Diagnostik Hardware &amp; Kecepatan Internet</title>
+    <meta name="description" content="Konsol diagnostik berbasis browser: uji keyboard, monitor, speaker, informasi sistem, dan kecepatan internet (ping, download, upload) secara real-time.">
+    <meta name="theme-color" content="#05080f">
+    <meta name="color-scheme" content="dark light">
 
-    <header class="text-center mb-8">
-        <div class="inline-flex items-center justify-center mb-3">
-            <img src="logo.svg" alt="Serba Tester App Logo" class="w-24 h-24 drop-shadow-lg">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+
+    <!-- Lapisan latar dekoratif -->
+    <div class="app-backdrop" aria-hidden="true"></div>
+    <div class="app-grid" aria-hidden="true"></div>
+
+    <!-- ======================================================
+         TOPBAR
+         ====================================================== -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="#main" aria-label="Serba Tester — beranda">
+                <img src="logo.svg" alt="" class="brand-mark" width="46" height="46">
+                <span class="brand-text">
+                    <span class="brand-name">Serba<span class="brand-accent">Tester</span></span>
+                    <span class="brand-tag">Hardware &amp; Network Diagnostics</span>
+                </span>
+            </a>
+
+            <div class="topbar-actions">
+                <span id="net-status" class="live-pill" title="Status koneksi jaringan">
+                    <span class="live-dot" aria-hidden="true"></span>
+                    <span id="net-status-text">Online</span>
+                </span>
+
+                <button id="theme-toggle" type="button" class="icon-button" aria-label="Ganti tema terang / gelap" title="Ganti tema (Alt+T)">
+                    <i data-lucide="sun" class="theme-icon-light" aria-hidden="true"></i>
+                    <i data-lucide="moon" class="theme-icon-dark" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
-        <h1 class="text-4xl font-extrabold text-primary-dark tracking-tight">Serba Tester App</h1>
-        <p class="text-gray-500 mt-1">Uji Perangkat Keras dan Koneksi Anda dengan Cepat</p>
     </header>
 
-    <!-- Navigasi Tab Baru dengan Style Lebih Modern -->
-    <nav class="flex flex-wrap justify-center space-x-1 p-1 bg-white rounded-2xl shadow-custom max-w-full overflow-x-auto mb-8">
-        <button id="keyboard-tab" class="tab-button flex items-center px-4 py-3 text-sm" onclick="setActiveTab('keyboard')">
-            <i data-lucide="keyboard" class="w-5 h-5 mr-2"></i> Keyboard
-        </button>
-        <button id="speed-tab" class="tab-button flex items-center px-4 py-3 text-sm" onclick="setActiveTab('speed')">
-            <i data-lucide="gauge" class="w-5 h-5 mr-2"></i> Kecepatan
-        </button>
-        <button id="audio-tab" class="tab-button flex items-center px-4 py-3 text-sm" onclick="setActiveTab('audio')">
-            <i data-lucide="volume-2" class="w-5 h-5 mr-2"></i> Audio
-        </button>
-        <button id="monitor-tab" class="tab-button flex items-center px-4 py-3 text-sm" onclick="setActiveTab('monitor')">
-            <i data-lucide="monitor" class="w-5 h-5 mr-2"></i> Monitor
-        </button>
-        <button id="system-tab" class="tab-button flex items-center px-4 py-3 text-sm" onclick="setActiveTab('system')">
-            <i data-lucide="cpu" class="w-5 h-5 mr-2"></i> System
-        </button>
-    </nav>
-
-    <!-- Kontainer Konten Utama -->
-    <div id="tester-container" class="w-full max-w-5xl mt-4 p-8 bg-card-bg rounded-2xl shadow-xl-dark border border-gray-100">
+    <main id="main" class="app-shell">
 
         <!-- ======================================================
-             KEYBOARD TESTER CONTENT
+             HERO
              ====================================================== -->
-        <div id="keyboard-content" class="tester-content" style="display: none;">
-            <h2 class="text-3xl font-bold text-primary-dark mb-6 flex items-center">
-                <i data-lucide="keyboard" class="w-7 h-7 mr-3 text-accent-green"></i> Tes Keyboard
-            </h2>
-            <p class="text-gray-600 mb-8">Tekan tombol di keyboard fisik Anda. Tombol yang berfungsi akan menyala hijau.</p>
-            <div id="keyboard-layout" class="flex flex-wrap justify-center p-4 bg-gray-50 rounded-lg shadow-inner">
+        <section class="hero">
+            <span class="hero-badge">
+                <i data-lucide="activity" style="width:.85rem;height:.85rem" aria-hidden="true"></i>
+                Diagnostic Console v2
+            </span>
 
-                <!-- Row Fungsi (F1-F12) -->
-                <div class="flex w-full justify-center mb-2 gap-1">
-                    <span class="key key-utility" data-code="F1">F1</span><span class="key key-utility" data-code="F2">F2</span><span class="key key-utility" data-code="F3">F3</span><span class="key key-utility" data-code="F4">F4</span>
-                    <span class="key key-utility ml-4" data-code="F5">F5</span><span class="key key-utility" data-code="F6">F6</span><span class="key key-utility" data-code="F7">F7</span><span class="key key-utility" data-code="F8">F8</span>
-                    <span class="key key-utility ml-4" data-code="F9">F9</span><span class="key key-utility" data-code="F10">F10</span><span class="key key-utility" data-code="F11">F11</span><span class="key key-utility" data-code="F12">F12</span>
-                </div>
+            <h1 class="hero-title">Uji perangkat &amp; koneksi<br><span class="grad">dalam satu konsol.</span></h1>
 
-                <!-- Row Angka/Simbol (~, 1, 2, ..., Backspace) -->
-                <div class="flex w-full justify-center mb-1">
-                    <span class="key key-utility" data-code="Backquote">~</span><span class="key" data-code="Digit1">1</span><span class="key" data-code="Digit2">2</span><span class="key" data-code="Digit3">3</span><span class="key" data-code="Digit4">4</span><span class="key" data-code="Digit5">5</span><span class="key" data-code="Digit6">6</span><span class="key" data-code="Digit7">7</span><span class="key" data-code="Digit8">8</span><span class="key" data-code="Digit9">9</span><span class="key" data-code="Digit0">0</span><span class="key" data-code="Minus">-</span><span class="key" data-code="Equal">=</span><span class="key key-enter key-utility" data-code="Backspace">Backspace</span>
-                </div>
+            <p class="hero-sub">
+                Lima modul diagnostik yang berjalan langsung di browser — tanpa instalasi, tanpa driver.
+                Semua hasil ditampilkan real-time.
+            </p>
 
-                <!-- Row QWERTY -->
-                <div class="flex w-full justify-center mb-1">
-                    <span class="key key-tab key-utility" data-code="Tab">Tab</span><span class="key" data-code="KeyQ">Q</span><span class="key" data-code="KeyW">W</span><span class="key" data-code="KeyE">E</span><span class="key" data-code="KeyR">R</span><span class="key" data-code="KeyT">T</span><span class="key" data-code="KeyY">Y</span><span class="key" data-code="KeyU">U</span><span class="key" data-code="KeyI">I</span><span class="key" data-code="KeyO">O</span><span class="key" data-code="KeyP">P</span><span class="key" data-code="BracketLeft">[</span><span class="key" data-code="BracketRight">]</span><span class="key key-utility" data-code="Backslash">\</span>
-                </div>
+            <div class="hero-stats">
+                <span class="chip chip-accent"><i data-lucide="keyboard" class="chip-icon" aria-hidden="true"></i> 104 tombol</span>
+                <span class="chip chip-violet"><i data-lucide="monitor" class="chip-icon" aria-hidden="true"></i> 12 pola layar</span>
+                <span class="chip chip-emerald"><i data-lucide="waves" class="chip-icon" aria-hidden="true"></i> 200–2000 Hz</span>
+                <span class="chip chip-amber"><i data-lucide="gauge" class="chip-icon" aria-hidden="true"></i> Ping / Down / Up</span>
+            </div>
+        </section>
 
-                <!-- Row ASDF -->
-                <div class="flex w-full justify-center mb-1">
-                    <span class="key key-caps key-utility" data-code="CapsLock">Caps Lock</span><span class="key" data-code="KeyA">A</span><span class="key" data-code="KeyS">S</span><span class="key" data-code="KeyD">D</span><span class="key" data-code="KeyF">F</span><span class="key" data-code="KeyG">G</span><span class="key" data-code="KeyH">H</span><span class="key" data-code="KeyJ">J</span><span class="key" data-code="KeyK">K</span><span class="key" data-code="KeyL">L</span><span class="key" data-code="Semicolon">;</span><span class="key" data-code="Quote">'</span><span class="key key-enter key-utility" data-code="Enter">Enter</span>
-                </div>
+        <!-- ======================================================
+             TAB NAVIGATION
+             ====================================================== -->
+        <nav class="tabs" role="tablist" aria-label="Modul diagnostik">
+            <button id="keyboard-tab" class="tab-button" role="tab" aria-controls="keyboard-content" aria-selected="true" onclick="setActiveTab('keyboard')">
+                <i data-lucide="keyboard" aria-hidden="true"></i> <span>Keyboard</span>
+            </button>
+            <button id="speed-tab" class="tab-button" role="tab" aria-controls="speed-content" aria-selected="false" onclick="setActiveTab('speed')">
+                <i data-lucide="gauge" aria-hidden="true"></i> <span>Kecepatan</span>
+            </button>
+            <button id="audio-tab" class="tab-button" role="tab" aria-controls="audio-content" aria-selected="false" onclick="setActiveTab('audio')">
+                <i data-lucide="volume-2" aria-hidden="true"></i> <span>Audio</span>
+            </button>
+            <button id="monitor-tab" class="tab-button" role="tab" aria-controls="monitor-content" aria-selected="false" onclick="setActiveTab('monitor')">
+                <i data-lucide="monitor" aria-hidden="true"></i> <span>Monitor</span>
+            </button>
+            <button id="system-tab" class="tab-button" role="tab" aria-controls="system-content" aria-selected="false" onclick="setActiveTab('system')">
+                <i data-lucide="cpu" aria-hidden="true"></i> <span>Sistem</span>
+            </button>
+        </nav>
 
-                <!-- Row ZXCV -->
-                <div class="flex w-full justify-center mb-1">
-                    <span class="key key-shift key-utility" data-code="ShiftLeft">Shift</span><span class="key" data-code="KeyZ">Z</span><span class="key" data-code="KeyX">X</span><span class="key" data-code="KeyC">C</span><span class="key" data-code="KeyV">V</span><span class="key" data-code="KeyB">B</span><span class="key" data-code="KeyN">N</span><span class="key" data-code="KeyM">M</span><span class="key" data-code="Comma">,</span><span class="key" data-code="Period">.</span><span class="key" data-code="Slash">/</span><span class="key key-shift key-utility" data-code="ShiftRight">Shift</span>
-                </div>
+        <!-- ======================================================
+             PANEL KONTEN
+             ====================================================== -->
+        <div id="tester-container" class="panel panel-stack">
+            <div class="panel-body">
 
-                <!-- Row Bawah -->
-                <div class="flex w-full justify-center mb-1">
-                    <span class="key key-ctrl key-utility" data-code="ControlLeft">Ctrl</span><span class="key key-ctrl key-utility" data-code="MetaLeft">Win</span><span class="key key-ctrl key-utility" data-code="AltLeft">Alt</span>
-                    <span class="key key-space key-utility" data-code="Space">Spacebar</span>
-                    <span class="key key-ctrl key-utility" data-code="AltRight">Alt</span><span class="key key-ctrl key-utility" data-code="MetaRight">Win</span><span class="key key-ctrl key-utility" data-code="ControlRight">Ctrl</span>
-                </div>
-
-                <!-- Tombol Navigasi Lain dan Angka -->
-                <div class="flex w-full justify-center mt-6 gap-8">
-                    <!-- Kelompok Insert/Home -->
-                    <div class="grid grid-cols-3 gap-1">
-                        <span class="key key-utility" data-code="Insert">Ins</span><span class="key key-utility" data-code="Home">Home</span><span class="key key-utility" data-code="PageUp">PgUp</span>
-                        <span class="key key-utility" data-code="Delete">Del</span><span class="key key-utility" data-code="End">End</span><span class="key key-utility" data-code="PageDown">PgDn</span>
+            <!-- ==================================================
+                 KEYBOARD
+                 ================================================== -->
+            <section id="keyboard-content" class="tester-content" role="tabpanel" aria-labelledby="keyboard-tab" style="display:none;">
+                <header class="u-between mb-3">
+                    <div>
+                        <h2 class="panel-title">
+                            <span class="title-icon"><i data-lucide="keyboard" aria-hidden="true"></i></span>
+                            Tes Keyboard
+                        </h2>
+                        <p class="panel-subtitle">
+                            Tekan tombol pada keyboard fisik Anda. Tombol menyala <span class="text-emerald fw-600">hijau terang</span>
+                            saat ditekan dan tetap bertanda setelah terdeteksi.
+                        </p>
                     </div>
-                    <!-- Kelompok Panah -->
-                    <div class="flex flex-col items-center">
-                        <span class="key key-utility" data-code="ArrowUp"><i data-lucide="arrow-up" class="w-4 h-4"></i></span>
-                        <div class="flex">
-                            <span class="key key-utility" data-code="ArrowLeft"><i data-lucide="arrow-left" class="w-4 h-4"></i></span>
-                            <span class="key key-utility" data-code="ArrowDown"><i data-lucide="arrow-down" class="w-4 h-4"></i></span>
-                            <span class="key key-utility" data-code="ArrowRight"><i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                    <span class="chip chip-accent u-nowrap">
+                        <i data-lucide="scan-line" class="chip-icon" aria-hidden="true"></i> Live capture
+                    </span>
+                </header>
+
+                <!-- Meter cakupan -->
+                <div class="coverage mb-3">
+                    <span class="readout-label">Cakupan</span>
+                    <div class="coverage-track" role="progressbar" aria-label="Cakupan tombol teruji" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="coverage-bar">
+                        <div id="coverage-fill" class="coverage-fill"></div>
+                    </div>
+                    <span class="coverage-value"><span id="coverage-value">0</span><span class="text-mute">%</span></span>
+                    <span class="chip" id="coverage-count">0 / 0 tombol</span>
+                </div>
+
+                <!-- Layout keyboard -->
+                <div id="keyboard-layout">
+
+                    <!-- Baris fungsi -->
+                    <div class="u-center-row u-full mb-2" style="gap:.15rem">
+                        <span class="key key-utility" data-code="Escape">Esc</span>
+                        <span class="key key-utility" data-code="F1" style="margin-left:1rem">F1</span><span class="key key-utility" data-code="F2">F2</span><span class="key key-utility" data-code="F3">F3</span><span class="key key-utility" data-code="F4">F4</span>
+                        <span class="key key-utility" data-code="F5" style="margin-left:.85rem">F5</span><span class="key key-utility" data-code="F6">F6</span><span class="key key-utility" data-code="F7">F7</span><span class="key key-utility" data-code="F8">F8</span>
+                        <span class="key key-utility" data-code="F9" style="margin-left:.85rem">F9</span><span class="key key-utility" data-code="F10">F10</span><span class="key key-utility" data-code="F11">F11</span><span class="key key-utility" data-code="F12">F12</span>
+                        <span class="key key-utility" data-code="PrintScreen" style="margin-left:.85rem">PrtSc</span><span class="key key-utility" data-code="ScrollLock">ScrLk</span><span class="key key-utility" data-code="Pause">Pause</span>
+                    </div>
+
+                    <!-- Baris angka -->
+                    <div class="u-center-row u-full" style="gap:0">
+                        <span class="key key-utility" data-code="Backquote">~</span><span class="key" data-code="Digit1">1</span><span class="key" data-code="Digit2">2</span><span class="key" data-code="Digit3">3</span><span class="key" data-code="Digit4">4</span><span class="key" data-code="Digit5">5</span><span class="key" data-code="Digit6">6</span><span class="key" data-code="Digit7">7</span><span class="key" data-code="Digit8">8</span><span class="key" data-code="Digit9">9</span><span class="key" data-code="Digit0">0</span><span class="key" data-code="Minus">-</span><span class="key" data-code="Equal">=</span><span class="key key-enter key-utility" data-code="Backspace">Backspace</span>
+                    </div>
+
+                    <!-- Baris QWERTY -->
+                    <div class="u-center-row u-full" style="gap:0">
+                        <span class="key key-tab key-utility" data-code="Tab">Tab</span><span class="key" data-code="KeyQ">Q</span><span class="key" data-code="KeyW">W</span><span class="key" data-code="KeyE">E</span><span class="key" data-code="KeyR">R</span><span class="key" data-code="KeyT">T</span><span class="key" data-code="KeyY">Y</span><span class="key" data-code="KeyU">U</span><span class="key" data-code="KeyI">I</span><span class="key" data-code="KeyO">O</span><span class="key" data-code="KeyP">P</span><span class="key" data-code="BracketLeft">[</span><span class="key" data-code="BracketRight">]</span><span class="key key-utility" data-code="Backslash">\</span>
+                    </div>
+
+                    <!-- Baris ASDF -->
+                    <div class="u-center-row u-full" style="gap:0">
+                        <span class="key key-caps key-utility" data-code="CapsLock">Caps</span><span class="key" data-code="KeyA">A</span><span class="key" data-code="KeyS">S</span><span class="key" data-code="KeyD">D</span><span class="key" data-code="KeyF">F</span><span class="key" data-code="KeyG">G</span><span class="key" data-code="KeyH">H</span><span class="key" data-code="KeyJ">J</span><span class="key" data-code="KeyK">K</span><span class="key" data-code="KeyL">L</span><span class="key" data-code="Semicolon">;</span><span class="key" data-code="Quote">'</span><span class="key key-enter key-utility" data-code="Enter">Enter</span>
+                    </div>
+
+                    <!-- Baris ZXCV -->
+                    <div class="u-center-row u-full" style="gap:0">
+                        <span class="key key-shift key-utility" data-code="ShiftLeft">Shift</span><span class="key" data-code="KeyZ">Z</span><span class="key" data-code="KeyX">X</span><span class="key" data-code="KeyC">C</span><span class="key" data-code="KeyV">V</span><span class="key" data-code="KeyB">B</span><span class="key" data-code="KeyN">N</span><span class="key" data-code="KeyM">M</span><span class="key" data-code="Comma">,</span><span class="key" data-code="Period">.</span><span class="key" data-code="Slash">/</span><span class="key key-shift key-utility" data-code="ShiftRight">Shift</span>
+                    </div>
+
+                    <!-- Baris bawah -->
+                    <div class="u-center-row u-full" style="gap:0">
+                        <span class="key key-ctrl key-utility" data-code="ControlLeft">Ctrl</span><span class="key key-ctrl key-utility" data-code="MetaLeft">Win</span><span class="key key-ctrl key-utility" data-code="AltLeft">Alt</span>
+                        <span class="key key-space key-utility" data-code="Space">Space</span>
+                        <span class="key key-ctrl key-utility" data-code="AltRight">Alt</span><span class="key key-ctrl key-utility" data-code="MetaRight">Win</span><span class="key key-ctrl key-utility" data-code="ContextMenu">Menu</span><span class="key key-ctrl key-utility" data-code="ControlRight">Ctrl</span>
+                    </div>
+
+                    <!-- Cluster: navigasi, panah, numpad -->
+                    <div class="key-cluster">
+                        <div class="keypad-group">
+                            <div class="keypad navpad">
+                                <span class="key key-utility" data-code="Insert">Ins</span><span class="key key-utility" data-code="Home">Home</span><span class="key key-utility" data-code="PageUp">PgUp</span>
+                                <span class="key key-utility" data-code="Delete">Del</span><span class="key key-utility" data-code="End">End</span><span class="key key-utility" data-code="PageDown">PgDn</span>
+                            </div>
+                            <span class="keypad-caption">Navigasi</span>
+                        </div>
+
+                        <div class="keypad-group">
+                            <div class="keypad arrowpad">
+                                <span aria-hidden="true"></span>
+                                <span class="key key-utility" data-code="ArrowUp"><i data-lucide="arrow-up" style="width:1rem;height:1rem" aria-hidden="true"></i></span>
+                                <span aria-hidden="true"></span>
+                                <span class="key key-utility" data-code="ArrowLeft"><i data-lucide="arrow-left" style="width:1rem;height:1rem" aria-hidden="true"></i></span>
+                                <span class="key key-utility" data-code="ArrowDown"><i data-lucide="arrow-down" style="width:1rem;height:1rem" aria-hidden="true"></i></span>
+                                <span class="key key-utility" data-code="ArrowRight"><i data-lucide="arrow-right" style="width:1rem;height:1rem" aria-hidden="true"></i></span>
+                            </div>
+                            <span class="keypad-caption">Panah</span>
+                        </div>
+
+                        <div class="keypad-group">
+                            <div class="keypad numpad">
+                                <span class="key key-utility" data-code="NumLock">Num</span><span class="key key-utility" data-code="NumpadDivide">/</span><span class="key key-utility" data-code="NumpadMultiply">*</span><span class="key key-utility" data-code="NumpadSubtract">-</span>
+                                <span class="key" data-code="Numpad7">7</span><span class="key" data-code="Numpad8">8</span><span class="key" data-code="Numpad9">9</span><span class="key key-utility np-tall" data-code="NumpadAdd">+</span>
+                                <span class="key" data-code="Numpad4">4</span><span class="key" data-code="Numpad5">5</span><span class="key" data-code="Numpad6">6</span>
+                                <span class="key" data-code="Numpad1">1</span><span class="key" data-code="Numpad2">2</span><span class="key" data-code="Numpad3">3</span><span class="key key-utility np-tall" data-code="NumpadEnter">Ent</span>
+                                <span class="key np-wide" data-code="Numpad0">0</span><span class="key" data-code="NumpadDecimal">.</span>
+                            </div>
+                            <span class="keypad-caption">Numpad</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="keyboard-stats" class="mt-6"></div>
-
-            <div class="mt-6 text-center">
-                <button onclick="resetKeyboardTest()" class="button-action bg-gray-500 text-white hover:bg-gray-600">
-                    <i data-lucide="refresh-cw" class="w-5 h-5 mr-2"></i> Reset Keyboard Test
-                </button>
-            </div>
-
-            <div id="status-message" class="mt-8 text-center text-lg font-semibold text-primary-dark p-4 rounded-xl bg-primary-blue/10 border-2 border-primary-blue/30 shadow-md">
-                <span id="key-press-indicator">Menunggu penekanan tombol...</span>
-            </div>
-        </div>
-
-        <!-- ======================================================
-             SPEED TESTER CONTENT
-             ====================================================== -->
-        <div id="speed-content" class="tester-content" style="display: none;">
-            <h2 class="text-3xl font-bold text-primary-dark mb-6 flex items-center">
-                <i data-lucide="gauge" class="w-7 h-7 mr-3 text-primary-blue"></i> Tes Kecepatan Internet
-            </h2>
-
-            <div id="speed-progress-bar" class="speed-progress-bar">
-                <div id="speed-progress-fill" class="speed-progress-fill"></div>
-            </div>
-
-            <div id="gauge-container">
-                <div id="gauge-arc"></div>
-                <div id="gauge-center"></div>
-                <div id="needle"></div>
-                <div id="speed-readout" class="text-2xl font-extrabold text-primary-dark">
-                    <span id="current-speed">0.00</span> <span class="text-base font-semibold text-gray-500">Mbps</span>
+                <!-- Legenda -->
+                <div class="legend mt-3">
+                    <span class="legend-item"><span class="legend-swatch is-idle"></span> Belum diuji</span>
+                    <span class="legend-item"><span class="legend-swatch is-active"></span> Sedang ditekan</span>
+                    <span class="legend-item"><span class="legend-swatch is-tested"></span> Terdeteksi normal</span>
                 </div>
-            </div>
 
-            <div class="flex flex-col sm:flex-row justify-around text-center mb-8 gap-4">
-                <div class="result-card bg-primary-blue/10 text-primary-blue flex-1">
-                    <div class="flex items-center justify-center mb-1">
-                        <div id="connection-status" class="connection-status good"></div>
+                <!-- Readout tombol terakhir -->
+                <div id="status-message" class="readout mt-3">
+                    <span class="readout-label">Input terakhir</span>
+                    <span id="key-press-indicator" class="readout-value">Menunggu penekanan tombol…</span>
+                </div>
+
+                <!-- Statistik dinamis (diisi script.js) -->
+                <div id="keyboard-stats" class="mt-3"></div>
+
+                <div class="button-row mt-3">
+                    <button type="button" onclick="resetKeyboardTest()" class="button-action btn-ghost">
+                        <i data-lucide="refresh-cw" aria-hidden="true"></i> Reset Tes
+                    </button>
+                </div>
+            </section>
+
+            <!-- ==================================================
+                 SPEED TEST
+                 ================================================== -->
+            <section id="speed-content" class="tester-content" role="tabpanel" aria-labelledby="speed-tab" style="display:none;">
+                <header class="u-between mb-3">
+                    <div>
+                        <h2 class="panel-title">
+                            <span class="title-icon"><i data-lucide="gauge" aria-hidden="true"></i></span>
+                            Tes Kecepatan Internet
+                        </h2>
+                        <p class="panel-subtitle">
+                            Mengukur latensi, kecepatan unduh, dan unggah secara berurutan.
+                            Backend PHP lokal dipakai lebih dulu, lalu fallback ke layanan publik.
+                        </p>
                     </div>
-                    <p class="text-sm text-gray-500 font-medium">PING (ms)</p>
-                    <p id="ping-result" class="text-3xl font-extrabold text-primary-blue mt-1">--</p>
+                    <span class="chip u-nowrap">
+                        <span id="connection-status" class="connection-status" aria-hidden="true"></span>
+                        <span id="connection-label">Siap</span>
+                    </span>
+                </header>
+
+                <!-- Progress keseluruhan -->
+                <div id="speed-progress-bar" class="speed-progress-bar" role="progressbar" aria-label="Progres tes kecepatan" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div id="speed-progress-fill" class="speed-progress-fill"></div>
                 </div>
-                <div class="result-card bg-accent-red/10 text-accent-red flex-1">
-                    <p class="text-sm text-gray-500 font-medium">DOWNLOAD (Mbps)</p>
-                    <p id="download-result" class="text-3xl font-extrabold text-accent-red mt-1">--</p>
+
+                <!-- Stepper fase -->
+                <div class="phase-track">
+                    <span id="phase-ping" class="phase-step"><span class="phase-dot"></span> Ping</span>
+                    <span class="phase-sep" aria-hidden="true"></span>
+                    <span id="phase-download" class="phase-step"><span class="phase-dot"></span> Download</span>
+                    <span class="phase-sep" aria-hidden="true"></span>
+                    <span id="phase-upload" class="phase-step"><span class="phase-dot"></span> Upload</span>
                 </div>
-                <div class="result-card bg-accent-green/10 text-accent-green flex-1">
-                    <p class="text-sm text-gray-500 font-medium">UPLOAD (Mbps)</p>
-                    <p id="upload-result" class="text-3xl font-extrabold text-accent-green mt-1">--</p>
+
+                <!-- Gauge -->
+                <div class="gauge-wrap">
+                    <div id="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 320 180" role="img" aria-label="Gauge kecepatan">
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#22d3ee"></stop>
+                                    <stop offset="45%" stop-color="#a78bfa"></stop>
+                                    <stop offset="100%" stop-color="#fb7185"></stop>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Tick marks -->
+                            <g class="gauge-ticks">
+                                <line x1="30"  y1="155" x2="14"  y2="155"></line>
+                                <line x1="68.1" y1="63.1" x2="56.8" y2="51.8"></line>
+                                <line x1="160" y1="25"  x2="160" y2="9"></line>
+                                <line x1="251.9" y1="63.1" x2="263.2" y2="51.8"></line>
+                                <line x1="290" y1="155" x2="306" y2="155"></line>
+                            </g>
+
+                            <path class="gauge-track-arc" d="M 30 155 A 130 130 0 0 1 290 155"></path>
+                            <path id="gauge-arc" d="M 30 155 A 130 130 0 0 1 290 155"></path>
+                        </svg>
+
+                        <div id="needle"></div>
+                        <div class="gauge-hub" aria-hidden="true"></div>
+
+                        <div class="gauge-readout">
+                            <span id="speed-readout">
+                                <span id="current-speed" class="gauge-value">0.00</span>
+                            </span>
+                            <div class="gauge-unit"><span id="gauge-unit">Mbps</span></div>
+                            <div class="gauge-phase"><span id="gauge-phase">Idle</span></div>
+                        </div>
+                    </div>
+
+                    <div class="gauge-scale">
+                        <span id="gauge-min">0</span>
+                        <span id="gauge-max">200</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="text-center space-y-6">
-                <p id="status-text" class="text-xl font-medium text-gray-700">Siap untuk memulai tes.</p>
-                <button id="start-button" onclick="startRealSpeedTest()" class="button-action bg-primary-blue text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-lg">
-                    <i data-lucide="activity" class="w-6 h-6 mr-3"></i> Mulai Tes
-                </button>
-                <p class="text-xs text-gray-400">Hasil tes menggunakan backend lokal untuk akurasi yang lebih baik.</p>
-            </div>
-        </div>
+                <!-- Kartu hasil -->
+                <div class="result-grid">
+                    <article class="result-card rc-ping">
+                        <div class="result-head">
+                            <i data-lucide="timer" aria-hidden="true"></i>
+                            <span class="result-label">Ping</span>
+                        </div>
+                        <div class="result-value"><span id="ping-result">--</span><span class="result-unit">ms</span></div>
+                    </article>
 
-        <!-- ======================================================
-             AUDIO TESTER CONTENT
-             ====================================================== -->
-        <div id="audio-content" class="tester-content p-6" style="display: none;">
-            <h2 class="text-3xl font-bold text-primary-dark mb-6 flex items-center">
-                <i data-lucide="volume-2" class="w-7 h-7 mr-3 text-accent-red"></i> Tes Speaker
-            </h2>
-            <p class="text-gray-600 mb-8">Tekan tombol di bawah untuk menguji apakah audio berfungsi dengan benar. <span class="font-semibold">Pastikan volume perangkat Anda cukup tinggi.</span></p>
+                    <article class="result-card rc-download">
+                        <div class="result-head">
+                            <i data-lucide="arrow-down-to-line" aria-hidden="true"></i>
+                            <span class="result-label">Download</span>
+                        </div>
+                        <div class="result-value"><span id="download-result">--</span><span class="result-unit">Mbps</span></div>
+                    </article>
 
-            <div class="audio-controls-grid">
-                <div class="text-center">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Volume: <span id="volume-display" class="font-mono">50%</span></label>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5" class="volume-slider">
+                    <article class="result-card rc-upload">
+                        <div class="result-head">
+                            <i data-lucide="arrow-up-from-line" aria-hidden="true"></i>
+                            <span class="result-label">Upload</span>
+                        </div>
+                        <div class="result-value"><span id="upload-result">--</span><span class="result-unit">Mbps</span></div>
+                    </article>
                 </div>
-                <div class="text-center">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Frekuensi: <span id="frequency-display" class="frequency-display">440 Hz</span></label>
-                    <input type="range" id="frequency-slider" min="200" max="2000" step="10" value="440" class="volume-slider">
+
+                <div class="u-center">
+                    <p id="status-text" class="text-dim mb-3">Siap untuk memulai tes.</p>
+
+                    <button id="start-button" type="button" onclick="startRealSpeedTest()" class="button-action btn-primary btn-lg">
+                        <i data-lucide="play" aria-hidden="true"></i> Mulai Tes
+                    </button>
+
+                    <p class="speed-footnote">
+                        <i data-lucide="info" style="width:.9rem;height:.9rem" aria-hidden="true"></i>
+                        Hasil paling akurat saat dijalankan lewat Apache/XAMPP dengan <span class="mono">speedtest.php</span> aktif.
+                    </p>
                 </div>
-            </div>
+            </section>
 
-            <div id="speaker-test-controls" class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
-                <button id="test-left" onclick="startSpeakerTest('left')" class="button-action audio-test-button bg-primary-blue text-white hover:bg-blue-600">
-                    <i data-lucide="volume-1" class="w-5 h-5 mr-2"></i> Speaker Kiri
-                </button>
-                <button id="test-right" onclick="startSpeakerTest('right')" class="button-action audio-test-button bg-accent-red text-white hover:bg-red-600">
-                    <i data-lucide="volume-1" class="w-5 h-5 mr-2"></i> Speaker Kanan
-                </button>
-                <button id="test-stereo" onclick="startSpeakerTest('stereo')" class="button-action audio-test-button bg-accent-green text-white hover:bg-green-600">
-                    <i data-lucide="volume-2" class="w-5 h-5 mr-2"></i> Stereo (Kiri & Kanan)
-                </button>
-            </div>
+            <!-- ==================================================
+                 AUDIO
+                 ================================================== -->
+            <section id="audio-content" class="tester-content" role="tabpanel" aria-labelledby="audio-tab" style="display:none;">
+                <header class="u-between mb-3">
+                    <div>
+                        <h2 class="panel-title">
+                            <span class="title-icon"><i data-lucide="volume-2" aria-hidden="true"></i></span>
+                            Tes Speaker &amp; Audio
+                        </h2>
+                        <p class="panel-subtitle">
+                            Nada uji dibangkitkan langsung oleh Web Audio API. Atur volume, frekuensi, dan bentuk gelombang,
+                            lalu periksa kanal kiri/kanan secara terpisah.
+                        </p>
+                    </div>
+                    <span class="chip chip-emerald u-nowrap">
+                        <i data-lucide="audio-waveform" class="chip-icon" aria-hidden="true"></i> Web Audio API
+                    </span>
+                </header>
 
-            <div id="test-indicator" class="mt-10 p-5 rounded-xl text-center text-xl font-semibold bg-gray-50 border-2 border-gray-200 shadow-inner">
-                <span id="speaker-status" class="text-gray-700">Tekan tombol untuk memulai tes speaker.</span>
-            </div>
+                <!-- Visualizer -->
+                <div id="visualizer-shell" class="visualizer-shell">
+                    <canvas id="audio-visualizer" width="1200" height="260" aria-hidden="true"></canvas>
+                    <span class="visualizer-idle">Sinyal tidak aktif</span>
+                </div>
 
-            <div class="mt-6 text-center">
-                <button id="stop-audio" onclick="stopSpeakerTest()" class="button-action bg-gray-500 text-white hover:bg-gray-600" style="display:none;">
-                     <i data-lucide="square" class="w-5 h-5 mr-2"></i> Hentikan Tes Audio
-                </button>
-            </div>
-        </div>
+                <!-- Kontrol -->
+                <div class="audio-controls-grid">
+                    <div class="control-card">
+                        <div class="control-head">
+                            <span class="control-label"><i data-lucide="volume-1" aria-hidden="true"></i> Volume</span>
+                            <span id="volume-display" class="control-value">50%</span>
+                        </div>
+                        <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume nada uji">
+                    </div>
 
-        <!-- ======================================================
-             MONITOR TESTER CONTENT
-             ====================================================== -->
-        <div id="monitor-content" class="tester-content p-0 overflow-hidden" style="display: none;">
+                    <div class="control-card">
+                        <div class="control-head">
+                            <span class="control-label"><i data-lucide="activity" aria-hidden="true"></i> Frekuensi</span>
+                            <span id="frequency-display" class="frequency-display">440 Hz</span>
+                        </div>
+                        <input type="range" id="frequency-slider" class="volume-slider" min="200" max="2000" step="10" value="440" aria-label="Frekuensi nada uji">
+                        <div class="preset-row" id="frequency-presets">
+                            <button type="button" class="preset-chip" data-freq="220">220</button>
+                            <button type="button" class="preset-chip is-active" data-freq="440">440 · A4</button>
+                            <button type="button" class="preset-chip" data-freq="1000">1 kHz</button>
+                            <button type="button" class="preset-chip" data-freq="2000">2 kHz</button>
+                        </div>
+                    </div>
 
-            <h2 class="text-3xl font-bold text-primary-dark mb-4 px-6 pt-4 flex items-center">
-                <i data-lucide="monitor" class="w-7 h-7 mr-3 text-primary-blue"></i> Tes Monitor (Visual)
-            </h2>
+                    <div class="control-card">
+                        <div class="control-head">
+                            <span class="control-label"><i data-lucide="audio-waveform" aria-hidden="true"></i> Gelombang</span>
+                            <span id="waveform-display" class="control-value">Sine</span>
+                        </div>
+                        <div class="preset-row" id="waveform-presets" style="margin-top:.25rem">
+                            <button type="button" class="preset-chip is-active" data-wave="sine">Sine</button>
+                            <button type="button" class="preset-chip" data-wave="square">Square</button>
+                            <button type="button" class="preset-chip" data-wave="triangle">Triangle</button>
+                            <button type="button" class="preset-chip" data-wave="sawtooth">Saw</button>
+                        </div>
+                    </div>
+                </div>
 
-            <div id="monitor-test-area">
-                <div id="monitor-test-content">Klik atau Tekan Tombol Panah Kanan (→) untuk memulai!</div>
-                <div id="monitor-gradient-box" style="display: none;"></div>
-            </div>
+                <!-- Indikator kanal -->
+                <div class="channel-grid">
+                    <div id="channel-left" class="channel-card">
+                        <i data-lucide="speaker" aria-hidden="true"></i>
+                        <span class="channel-name">L</span>
+                        <span class="channel-sub">Kanal Kiri</span>
+                    </div>
+                    <div id="channel-right" class="channel-card">
+                        <i data-lucide="speaker" aria-hidden="true"></i>
+                        <span class="channel-name">R</span>
+                        <span class="channel-sub">Kanal Kanan</span>
+                    </div>
+                </div>
 
-            <div id="monitor-test-navigation">
-                <button id="monitor-prev-btn" class="monitor-nav-button">← Sebelumnya</button>
-                <span id="monitor-test-info">Persiapan (0/9)</span>
-                <button id="monitor-next-btn" class="monitor-nav-button">Selanjutnya →</button>
-                <button id="monitor-fullscreen-btn" onclick="toggleFullScreen()" class="monitor-nav-button fullscreen-btn flex items-center">
-                    <i data-lucide="maximize" class="w-4 h-4 mr-2"></i> Layar Penuh
-                </button>
-                <button id="monitor-exit-btn" onclick="setActiveTab('keyboard')" class="monitor-nav-button bg-gray-500 hover:bg-gray-600">Selesai</button>
-            </div>
+                <!-- Tombol tes -->
+                <div id="speaker-test-controls" class="button-row mb-3">
+                    <button id="test-left" type="button" onclick="startSpeakerTest('left')" class="button-action audio-test-button btn-blue">
+                        <i data-lucide="chevron-left" aria-hidden="true"></i> Speaker Kiri
+                    </button>
+                    <button id="test-stereo" type="button" onclick="startSpeakerTest('stereo')" class="button-action audio-test-button btn-primary">
+                        <i data-lucide="volume-2" aria-hidden="true"></i> Stereo
+                    </button>
+                    <button id="test-right" type="button" onclick="startSpeakerTest('right')" class="button-action audio-test-button btn-violet">
+                        Speaker Kanan <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
 
-            <p class="text-sm text-gray-500 text-center mt-2 px-6 pb-2">Gunakan tombol <span class="font-mono bg-gray-200 px-1 rounded">Panah Kiri/Kanan</span> atau <span class="font-mono bg-gray-200 px-1 rounded">klik</span> pada layar untuk navigasi.</p>
-        </div>
+                <div id="test-indicator">
+                    <span id="speaker-status" class="text-dim">Tekan salah satu tombol untuk memulai tes speaker.</span>
+                </div>
 
-        <!-- ======================================================
-             SYSTEM INFO CONTENT
-             ====================================================== -->
-        <div id="system-content" class="tester-content" style="display: none;">
-            <h2 class="text-3xl font-bold text-primary-dark mb-6 flex items-center">
-                <i data-lucide="cpu" class="w-7 h-7 mr-3 text-purple-500"></i> Informasi Sistem
-            </h2>
-            <p class="text-gray-600 mb-8">Informasi lengkap tentang browser, hardware, dan kemampuan sistem Anda.</p>
+                <div class="button-row mt-3">
+                    <button id="stop-audio" type="button" onclick="stopSpeakerTest()" class="button-action btn-rose" style="display:none;">
+                        <i data-lucide="square" aria-hidden="true"></i> Hentikan Nada
+                    </button>
+                </div>
 
-            <div id="system-info-container" class="mb-8">
-                <!-- System info will be populated by JavaScript -->
-            </div>
+                <p class="monitor-hint">
+                    <i data-lucide="headphones" style="width:.9rem;height:.9rem" aria-hidden="true"></i>
+                    Tip: pakai headphone untuk memastikan pemetaan kanal kiri/kanan benar.
+                </p>
+            </section>
 
-            <div class="text-center space-y-4">
-                <button onclick="systemInfo.displayInfo()" class="button-action bg-purple-500 text-white hover:bg-purple-600">
-                    <i data-lucide="refresh-cw" class="w-5 h-5 mr-2"></i> Perbarui Info
-                </button>
-            </div>
+            <!-- ==================================================
+                 MONITOR
+                 ================================================== -->
+            <section id="monitor-content" class="tester-content" role="tabpanel" aria-labelledby="monitor-tab" style="display:none;">
+                <header class="u-between mb-3 monitor-chrome">
+                    <div>
+                        <h2 class="panel-title">
+                            <span class="title-icon"><i data-lucide="monitor" aria-hidden="true"></i></span>
+                            Tes Monitor
+                        </h2>
+                        <p class="panel-subtitle">
+                            Rangkaian pola layar untuk mendeteksi dead pixel, stuck pixel, banding, dan
+                            keseragaman warna. Jalankan dalam mode layar penuh untuk hasil terbaik.
+                        </p>
+                    </div>
+                    <span class="chip chip-violet u-nowrap">
+                        <i data-lucide="scan-eye" class="chip-icon" aria-hidden="true"></i> 12 pola
+                    </span>
+                </header>
 
-            <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h3 class="text-lg font-semibold text-blue-800 mb-2">💡 Tips:</h3>
-                <ul class="text-blue-700 text-sm space-y-1">
-                    <li>• Informasi ini membantu dalam troubleshooting masalah browser</li>
-                    <li>• Web Audio API diperlukan untuk tes speaker</li>
-                    <li>• WebGL diperlukan untuk aplikasi 3D dan games</li>
-                    <li>• Service Worker mendukung PWA (Progressive Web Apps)</li>
-                </ul>
-            </div>
-        </div>
+                <div id="monitor-test-area" role="button" tabindex="0" aria-label="Area tes monitor, klik untuk pola berikutnya">
+                    <div id="monitor-test-content">Klik area ini atau tekan <b>→</b> untuk memulai tes monitor.</div>
+                    <div id="monitor-gradient-box" style="display:none;"></div>
+                </div>
 
-    </div>
+                <div id="monitor-test-navigation" class="monitor-chrome">
+                    <button id="monitor-prev-btn" type="button" class="monitor-nav-button">
+                        <i data-lucide="chevron-left" style="width:1rem;height:1rem" aria-hidden="true"></i> Sebelumnya
+                    </button>
 
-    <script src="script.js"></script>
+                    <span id="monitor-test-info">Persiapan (0/12)</span>
+
+                    <button id="monitor-next-btn" type="button" class="monitor-nav-button">
+                        Selanjutnya <i data-lucide="chevron-right" style="width:1rem;height:1rem" aria-hidden="true"></i>
+                    </button>
+
+                    <button id="monitor-fullscreen-btn" type="button" onclick="toggleFullScreen()" class="monitor-nav-button fullscreen-btn">
+                        <i data-lucide="maximize" style="width:1rem;height:1rem" aria-hidden="true"></i> Layar Penuh
+                    </button>
+
+                    <button id="monitor-exit-btn" type="button" onclick="setActiveTab('keyboard')" class="monitor-nav-button is-exit">
+                        <i data-lucide="x" style="width:1rem;height:1rem" aria-hidden="true"></i> Selesai
+                    </button>
+                </div>
+
+                <p class="monitor-hint monitor-chrome">
+                    Navigasi: <kbd>←</kbd> <kbd>→</kbd> atau <kbd>Space</kbd> · keluar layar penuh dengan <kbd>Esc</kbd>
+                </p>
+            </section>
+
+            <!-- ==================================================
+                 SYSTEM INFO
+                 ================================================== -->
+            <section id="system-content" class="tester-content" role="tabpanel" aria-labelledby="system-tab" style="display:none;">
+                <header class="u-between mb-3">
+                    <div>
+                        <h2 class="panel-title">
+                            <span class="title-icon"><i data-lucide="cpu" aria-hidden="true"></i></span>
+                            Informasi Sistem
+                        </h2>
+                        <p class="panel-subtitle">
+                            Ringkasan browser, layar, hardware, dan dukungan Web API pada perangkat ini —
+                            berguna untuk melacak akar masalah kompatibilitas.
+                        </p>
+                    </div>
+                    <span class="chip chip-accent u-nowrap">
+                        <i data-lucide="shield-check" class="chip-icon" aria-hidden="true"></i> Hanya lokal
+                    </span>
+                </header>
+
+                <div id="system-info-container" class="mb-3">
+                    <!-- Diisi oleh system_info.js -->
+                </div>
+
+                <div class="button-row mb-3">
+                    <button type="button" onclick="systemInfo.displayInfo()" class="button-action btn-violet">
+                        <i data-lucide="refresh-cw" aria-hidden="true"></i> Perbarui Info
+                    </button>
+                    <button type="button" onclick="systemInfo.copyInfo()" class="button-action btn-ghost">
+                        <i data-lucide="clipboard-copy" aria-hidden="true"></i> Copy JSON
+                    </button>
+                    <button type="button" onclick="systemInfo.exportInfo()" class="button-action btn-ghost">
+                        <i data-lucide="download" aria-hidden="true"></i> Unduh .json
+                    </button>
+                </div>
+
+                <div class="tip-box">
+                    <span class="tip-icon"><i data-lucide="lightbulb" aria-hidden="true"></i></span>
+                    <div>
+                        <h3>Kenapa ini penting</h3>
+                        <ul class="tip-list">
+                            <li><span class="mono">Web Audio API</span> wajib aktif agar tes speaker berjalan.</li>
+                            <li><span class="mono">WebGL</span> menandakan akselerasi GPU untuk game dan konten 3D.</li>
+                            <li><span class="mono">Service Worker</span> dibutuhkan untuk fitur PWA dan mode offline.</li>
+                            <li>Semua data dibaca di perangkat Anda dan tidak dikirim ke mana pun.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            </div><!-- /.panel-body -->
+        </div><!-- /.panel -->
+    </main>
+
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+    <footer class="app-footer">
+        <span>Serba Tester App · diagnostik berbasis browser</span>
+        <span class="u-row-wrap" style="gap:1rem">
+            <span><kbd>Alt</kbd>+<kbd>1</kbd>…<kbd>5</kbd> pindah modul</span>
+            <span><kbd>Alt</kbd>+<kbd>T</kbd> ganti tema</span>
+            <a href="README.md">Dokumentasi</a>
+        </span>
+    </footer>
+
+    <!-- Toast container -->
+    <div id="toast-stack" class="toast-stack" role="status" aria-live="polite"></div>
+
     <script src="system_info.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

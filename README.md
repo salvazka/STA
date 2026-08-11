@@ -2,29 +2,51 @@
 
 Aplikasi web lengkap untuk menguji perangkat keras dan kecepatan internet menggunakan **HTML, CSS, JavaScript, dan PHP**.
 
+## 🎨 **Tampilan**
+
+Antarmuka memakai tema **"Diagnostic HUD"**: konsol gelap dengan aksen neon, panel
+glassmorphism, dan readout angka monospace.
+
+- **Dark mode** sebagai default, lengkap dengan **light mode** (tombol di kanan atas atau `Alt` + `T`)
+- Preferensi tema mengikuti setelan sistem pada kunjungan pertama, lalu disimpan di `localStorage`
+- Navigasi cepat antar modul dengan `Alt` + `1` … `5`
+- Indikator status jaringan live di topbar, plus notifikasi toast untuk setiap aksi
+- Responsif sampai layar ponsel, menghormati `prefers-reduced-motion`, dan punya gaya khusus untuk cetak
+
 ## 🌟 **Fitur Utama**
 
 ### 🖥️ **Tes Hardware**
-- **Tes Keyboard**: Deteksi tombol yang berfungsi dengan visual feedback real-time, bekas penekanan (warna kuning), dan tombol reset
-- **Tes Monitor**: 9 tes visual untuk memeriksa piksel mati, uniformity, dan gradien
-- **Tes Audio**: Kontrol volume dan frekuensi real-time dengan speaker test stereo/mono
-- **Tes System**: Informasi lengkap browser, hardware, dan APIs yang didukung
+- **Tes Keyboard**: Layout penuh 104 tombol (termasuk numpad, `PrtSc`, `ScrLk`, `Pause`, `Menu`)
+  dengan feedback real-time, meter **cakupan** dalam persen, readout kode tombol terakhir, dan tombol reset
+- **Tes Monitor**: 12 pola visual untuk memeriksa dead/stuck pixel, backlight bleed, banding, dan gradien —
+  navigasi manual penuh (tanpa auto-advance) serta mode layar penuh
+- **Tes Audio**: Osilator Web Audio dengan kontrol volume, frekuensi (200–2000 Hz), preset frekuensi,
+  pilihan bentuk gelombang (sine/square/triangle/sawtooth), **visualizer gelombang real-time**,
+  dan indikator kanal kiri/kanan
+- **Tes System**: Browser, layar (termasuk estimasi **refresh rate**), hardware, **GPU renderer**,
+  dukungan Web API, koneksi, dan metrik performa halaman — bisa disalin atau diunduh sebagai JSON
 
 ### 🌐 **Tes Kecepatan Internet (Real-time)**
-- **Ping/Latency Test**: Mengukur latensi jaringan menggunakan PHP backend
+- **Ping/Latency Test**: Benar-benar diukur — 6 sampel RTT ke `speedtest.php`, outlier dibuang,
+  plus perhitungan **jitter**
 - **Download Speed Test**: Mengukur kecepatan download asli dengan PHP backend
-- **Upload Speed Test**: Mengukur kecepatan upload asli dengan PHP backend (realistis 10-20 Mbps)
-- **Real-time Progress**: Progress bar animasi dan gauge interaktif
-- **Connection Status**: Indikator real-time status koneksi (Excellent/Good/Fair/Poor)
+- **Upload Speed Test**: Mengukur kecepatan upload asli dengan PHP backend
+- **Gauge SVG**: Jarum dan busur gradien yang skalanya menyesuaikan fase
+  (ms untuk ping, Mbps untuk download/upload)
+- **Stepper fase**: Ping → Download → Upload dengan status berjalan/selesai
+- **Connection Status**: Indikator real-time status koneksi (Sangat baik/Baik/Cukup/Lemah)
 
 ## 🛠️ **Teknologi yang Digunakan**
 
 ### **Frontend**
-- **HTML5** - Struktur aplikasi
-- **CSS3 + Tailwind** - Styling modern dan responsif
-- **JavaScript (ES6+)** - Interaktivitas dan logika aplikasi
-- **Web Audio API** - Tes audio dengan kontrol real-time
-- **Fetch API** - Komunikasi dengan backend
+- **HTML5** - Struktur aplikasi, semantik + atribut ARIA untuk tab dan progress bar
+- **CSS3 murni** - Design token via CSS custom properties, glassmorphism, `color-mix()`, SVG gauge.
+  Tanpa framework dan tanpa build step (Tailwind CDN sudah dilepas agar tidak ada dependensi runtime berat)
+- **JavaScript (ES6+)** - Interaktivitas dan logika aplikasi, tanpa dependensi selain ikon
+- **Lucide** - Ikon SVG
+- **Web Audio API** - Osilator, stereo panner, dan `AnalyserNode` untuk visualizer
+- **Canvas 2D** - Menggambar bentuk gelombang audio
+- **Fetch API + XHR** - Komunikasi dengan backend (XHR dipakai karena butuh event progress upload)
 
 ### **Backend**
 - **🐘 PHP** - Backend untuk tes kecepatan internet
@@ -47,6 +69,7 @@ Aplikasi web lengkap untuk menguji perangkat keras dan kecepatan internet menggu
    ├── styles.css
    ├── script.js
    ├── system_info.js
+   ├── logo.svg
    └── speedtest.php
    ```
 
@@ -63,12 +86,13 @@ Aplikasi web lengkap untuk menguji perangkat keras dan kecepatan internet menggu
 
 ```
 serba-tester/
-├── index.html          # Frontend utama (HTML structure)
-├── styles.css          # Styling (Tailwind + Custom CSS)
-├── script.js           # JavaScript logic (Main functionality)
-├── system_info.js     # System information module
-├── speedtest.php       # PHP backend (Speed test API)
-└── README.md          # Dokumentasi ini
+├── index.html          # Frontend utama (struktur HTML)
+├── styles.css          # Design system & seluruh styling (CSS murni)
+├── script.js           # Logika aplikasi (keyboard, speed, audio, monitor, tema, toast)
+├── system_info.js      # Modul informasi sistem
+├── logo.svg            # Logo & favicon
+├── speedtest.php       # Backend PHP (API speed test)
+└── README.md           # Dokumentasi ini
 ```
 
 ## 🎯 **Cara Kerja Tes Kecepatan**

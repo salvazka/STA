@@ -1,60 +1,58 @@
-<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Serba Tester">
   <defs>
-    <linearGradient id="circleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    <linearGradient id="stBody" x1="18" y1="10" x2="102" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#101a30"/>
+      <stop offset="100%" stop-color="#070c17"/>
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+
+    <linearGradient id="stArc" x1="20" y1="80" x2="100" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="55%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+
+    <linearGradient id="stBolt" x1="48" y1="26" x2="76" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e8fdff"/>
+      <stop offset="100%" stop-color="#67e8f9"/>
+    </linearGradient>
+
+    <linearGradient id="stRing" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#a78bfa" stop-opacity=".35"/>
+    </linearGradient>
+
+    <filter id="stGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.4" result="blur"/>
       <feMerge>
-        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
-  
-  <!-- Outer glow circle -->
-  <circle cx="60" cy="60" r="58" fill="url(#circleGradient)" opacity="0.3" filter="url(#glow)"/>
-  
-  <!-- Main circle -->
-  <circle cx="60" cy="60" r="55" fill="url(#circleGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-  
-  <!-- Lightning bolt (center) -->
-  <path d="M 50 35 L 50 50 L 40 50 L 60 85 L 60 70 L 70 70 L 50 35 Z" fill="white" opacity="0.95"/>
-  
-  <!-- Keyboard icon (top left) -->
-  <g transform="translate(20, 20) scale(0.8)">
-    <rect x="5" y="8" width="20" height="12" fill="white" opacity="0.8" rx="1"/>
-    <rect x="6" y="9" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="10" y="9" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="14" y="9" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="18" y="9" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="6" y="12" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="10" y="12" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="14" y="12" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="18" y="12" width="3" height="2" fill="#3b82f6" opacity="0.6"/>
-    <rect x="8" y="15" width="14" height="2" fill="#3b82f6" opacity="0.6" rx="0.5"/>
+
+  <!-- Badan utama: kapsul membulat gaya instrumen -->
+  <rect x="6" y="6" width="108" height="108" rx="32" fill="url(#stBody)"/>
+  <rect x="6.75" y="6.75" width="106.5" height="106.5" rx="31.25" stroke="url(#stRing)" stroke-width="1.5"/>
+
+  <!-- Tick marks gauge -->
+  <g stroke="#7c8ba3" stroke-opacity=".55" stroke-width="2.5" stroke-linecap="round">
+    <path d="M25 79 L19.5 82"/>
+    <path d="M27.5 55.5 L21.5 54"/>
+    <path d="M39 37 L34.5 32.5"/>
+    <path d="M60 30.5 L60 24"/>
+    <path d="M81 37 L85.5 32.5"/>
+    <path d="M92.5 55.5 L98.5 54"/>
+    <path d="M95 79 L100.5 82"/>
   </g>
-  
-  <!-- Speedometer icon (top right) -->
-  <g transform="translate(80, 20) scale(0.8)">
-    <circle cx="15" cy="15" r="12" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/>
-    <path d="M 15 3 A 12 12 0 0 1 25 15" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/>
-    <line x1="15" y1="15" x2="22" y2="8" stroke="white" stroke-width="2" opacity="0.9"/>
-  </g>
-  
-  <!-- Speaker icon (bottom left) -->
-  <g transform="translate(20, 80) scale(0.8)">
-    <path d="M 5 10 L 5 20 L 12 20 L 18 25 L 18 5 L 12 10 Z" fill="white" opacity="0.8"/>
-    <path d="M 20 8 Q 25 8 25 15 Q 25 22 20 22" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
-    <path d="M 20 5 Q 28 5 28 15 Q 28 25 20 25" fill="none" stroke="white" stroke-width="1" opacity="0.5"/>
-  </g>
-  
-  <!-- Monitor icon (bottom right) -->
-  <g transform="translate(80, 80) scale(0.8)">
-    <rect x="8" y="5" width="14" height="10" fill="white" opacity="0.8" rx="1"/>
-    <rect x="9" y="6" width="12" height="8" fill="#3b82f6" opacity="0.3"/>
-    <rect x="13" y="15" width="6" height="3" fill="white" opacity="0.8" rx="0.5"/>
-    <line x1="10" y1="18" x2="20" y2="18" stroke="white" stroke-width="1" opacity="0.6"/>
-  </g>
+
+  <!-- Busur gauge -->
+  <path d="M26 84 A 36 36 0 1 1 94 84"
+        stroke="url(#stArc)" stroke-width="8" stroke-linecap="round" filter="url(#stGlow)"/>
+
+  <!-- Kilat: simbol tes cepat -->
+  <path d="M64.5 34 L45.5 66.5 H56.5 L53.5 92 L74 57.5 H62.5 L64.5 34 Z"
+        fill="url(#stBolt)" filter="url(#stGlow)"/>
+
+  <!-- Baseline / hub -->
+  <circle cx="60" cy="92" r="4" fill="#0b1220" stroke="#22d3ee" stroke-width="2"/>
 </svg>
