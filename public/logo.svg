@@ -1,24 +1,24 @@
 <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Serba Tester">
   <defs>
     <linearGradient id="stBody" x1="18" y1="10" x2="102" y2="112" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#101a30"/>
-      <stop offset="100%" stop-color="#070c17"/>
+      <stop offset="0%" stop-color="#0e2a1f"/>
+      <stop offset="100%" stop-color="#050f0b"/>
     </linearGradient>
 
     <linearGradient id="stArc" x1="20" y1="80" x2="100" y2="30" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="55%" stop-color="#a78bfa"/>
-      <stop offset="100%" stop-color="#fb7185"/>
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="55%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#a3e635"/>
     </linearGradient>
 
     <linearGradient id="stBolt" x1="48" y1="26" x2="76" y2="96" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#e8fdff"/>
-      <stop offset="100%" stop-color="#67e8f9"/>
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
     </linearGradient>
 
     <linearGradient id="stRing" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22d3ee" stop-opacity=".9"/>
-      <stop offset="100%" stop-color="#a78bfa" stop-opacity=".35"/>
+      <stop offset="0%" stop-color="#34d399" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#a3e635" stop-opacity=".35"/>
     </linearGradient>
 
     <filter id="stGlow" x="-40%" y="-40%" width="180%" height="180%">
@@ -35,7 +35,7 @@
   <rect x="6.75" y="6.75" width="106.5" height="106.5" rx="31.25" stroke="url(#stRing)" stroke-width="1.5"/>
 
   <!-- Tick marks gauge -->
-  <g stroke="#7c8ba3" stroke-opacity=".55" stroke-width="2.5" stroke-linecap="round">
+  <g stroke="#6d8a7d" stroke-opacity=".55" stroke-width="2.5" stroke-linecap="round">
     <path d="M25 79 L19.5 82"/>
     <path d="M27.5 55.5 L21.5 54"/>
     <path d="M39 37 L34.5 32.5"/>
@@ -54,5 +54,5 @@
         fill="url(#stBolt)" filter="url(#stGlow)"/>
 
   <!-- Baseline / hub -->
-  <circle cx="60" cy="92" r="4" fill="#0b1220" stroke="#22d3ee" stroke-width="2"/>
+  <circle cx="60" cy="92" r="4" fill="#071310" stroke="#34d399" stroke-width="2"/>
 </svg>

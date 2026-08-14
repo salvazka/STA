@@ -1,0 +1,56 @@
+<svg width="640" height="360" viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pratinjau tes kecepatan">
+  <defs>
+    <linearGradient id="spBg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0b1f18"/>
+      <stop offset="100%" stop-color="#050f0b"/>
+    </linearGradient>
+    <linearGradient id="spArc" x1="140" y1="0" x2="500" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="50%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#a3e635"/>
+    </linearGradient>
+    <linearGradient id="spFill" x1="0" y1="250" x2="0" y2="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399" stop-opacity=".45"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="spGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#spBg)"/>
+  <ellipse cx="320" cy="120" rx="250" ry="130" fill="#2dd4bf" fill-opacity=".10"/>
+
+  <!-- Tick marks -->
+  <g stroke="#3a5449" stroke-width="3" stroke-linecap="round">
+    <path d="M148 214 L128 214"/>
+    <path d="M175 130 L158 118"/>
+    <path d="M320 96 L320 76"/>
+    <path d="M465 130 L482 118"/>
+    <path d="M492 214 L512 214"/>
+  </g>
+
+  <!-- Busur gauge -->
+  <path d="M148 214 A 172 172 0 0 1 492 214" stroke="#132a21" stroke-width="20" stroke-linecap="round"/>
+  <path d="M148 214 A 172 172 0 0 1 492 214" stroke="url(#spArc)" stroke-width="20" stroke-linecap="round"
+        stroke-dasharray="540" stroke-dashoffset="196" filter="url(#spGlow)" opacity=".85"/>
+  <path d="M148 214 A 172 172 0 0 1 492 214" stroke="url(#spArc)" stroke-width="20" stroke-linecap="round"
+        stroke-dasharray="540" stroke-dashoffset="196"/>
+
+  <!-- Jarum -->
+  <g transform="rotate(24 320 214)">
+    <rect x="316.5" y="96" width="7" height="120" rx="3.5" fill="#e9f5ee"/>
+    <circle cx="320" cy="98" r="8" fill="#a3e635"/>
+  </g>
+  <circle cx="320" cy="214" r="14" fill="#0a1512" stroke="#3a5449" stroke-width="3"/>
+
+  <!-- Readout -->
+  <text x="320" y="176" text-anchor="middle" font-family="ui-monospace, monospace" font-size="46" font-weight="700" fill="#e9f5ee">86.4</text>
+  <text x="320" y="198" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" letter-spacing="3" fill="#6d8a7d">MBPS</text>
+
+  <!-- Grafik realtime -->
+  <path d="M60 316 L100 300 L140 306 L180 284 L220 292 L260 268 L300 276 L340 258 L380 266 L420 250 L460 258 L500 246 L540 252 L580 244 L580 330 L60 330 Z" fill="url(#spFill)"/>
+  <path d="M60 316 L100 300 L140 306 L180 284 L220 292 L260 268 L300 276 L340 258 L380 266 L420 250 L460 258 L500 246 L540 252 L580 244"
+        stroke="#4ade80" stroke-width="3" stroke-linejoin="round" fill="none"/>
+  <circle cx="580" cy="244" r="5" fill="#a3e635"/>
+</svg>

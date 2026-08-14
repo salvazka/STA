@@ -1,0 +1,50 @@
+<svg width="640" height="360" viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pratinjau tes audio">
+  <defs>
+    <linearGradient id="auBg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0b1f18"/>
+      <stop offset="100%" stop-color="#050f0b"/>
+    </linearGradient>
+    <linearGradient id="auWave" x1="60" y1="0" x2="580" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="50%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#a3e635"/>
+    </linearGradient>
+    <filter id="auGlow" x="-30%" y="-60%" width="160%" height="220%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#auBg)"/>
+  <ellipse cx="320" cy="160" rx="250" ry="120" fill="#2dd4bf" fill-opacity=".10"/>
+
+  <!-- Garis nol -->
+  <path d="M60 160 H580" stroke="#24382e" stroke-width="2" stroke-dasharray="6 8"/>
+
+  <!-- Gelombang sinus -->
+  <g filter="url(#auGlow)" opacity=".7">
+    <path d="M60 160 Q 92 60 124 160 T 188 160 T 252 160 T 316 160 T 380 160 T 444 160 T 508 160 T 572 160"
+          stroke="url(#auWave)" stroke-width="7" fill="none" stroke-linecap="round"/>
+  </g>
+  <path d="M60 160 Q 92 60 124 160 T 188 160 T 252 160 T 316 160 T 380 160 T 444 160 T 508 160 T 572 160"
+        stroke="url(#auWave)" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- Kanal L / R -->
+  <g>
+    <rect x="96" y="240" width="200" height="72" rx="14" fill="#12291f" stroke="#2f4a3d"/>
+    <text x="128" y="286" font-family="ui-monospace, monospace" font-size="34" font-weight="700" fill="#6d8a7d">L</text>
+    <text x="164" y="272" font-family="Inter, sans-serif" font-size="14" fill="#6d8a7d">Kanal</text>
+    <text x="164" y="292" font-family="Inter, sans-serif" font-size="14" fill="#6d8a7d">Kiri</text>
+  </g>
+  <g>
+    <rect x="344" y="240" width="200" height="72" rx="14" fill="#15361f" stroke="#a3e635" stroke-opacity=".6"/>
+    <text x="376" y="286" font-family="ui-monospace, monospace" font-size="34" font-weight="700" fill="#a3e635">R</text>
+    <text x="412" y="272" font-family="Inter, sans-serif" font-size="14" fill="#a3e635">Kanal</text>
+    <text x="412" y="292" font-family="Inter, sans-serif" font-size="14" fill="#a3e635">Kanan</text>
+    <circle cx="516" cy="264" r="6" fill="#a3e635"/>
+  </g>
+
+  <!-- Slider frekuensi -->
+  <rect x="96" y="204" width="448" height="6" rx="3" fill="#0d1f18" stroke="#24382e"/>
+  <rect x="96" y="204" width="196" height="6" rx="3" fill="#34d399"/>
+  <circle cx="292" cy="207" r="10" fill="#e9f5ee" stroke="#0a1512" stroke-width="3"/>
+</svg>

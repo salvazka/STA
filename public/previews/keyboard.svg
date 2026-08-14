@@ -1,0 +1,63 @@
+<svg width="640" height="360" viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pratinjau tes keyboard">
+  <defs>
+    <linearGradient id="kbBg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0b1f18"/>
+      <stop offset="100%" stop-color="#050f0b"/>
+    </linearGradient>
+    <linearGradient id="kbLive" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9f99d"/>
+      <stop offset="100%" stop-color="#a3e635"/>
+    </linearGradient>
+    <filter id="kbGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#kbBg)"/>
+  <ellipse cx="320" cy="150" rx="240" ry="120" fill="#34d399" fill-opacity=".10"/>
+
+  <!-- Baris 1 -->
+  <g>
+    <rect x="70" y="96" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="122" y="96" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="174" y="96" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="226" y="96" width="44" height="44" rx="9" fill="#153a29" stroke="#4ade80" stroke-opacity=".5"/>
+    <rect x="278" y="96" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="330" y="96" width="44" height="44" rx="9" fill="#153a29" stroke="#4ade80" stroke-opacity=".5"/>
+    <rect x="382" y="96" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="434" y="96" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="486" y="96" width="84" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+  </g>
+
+  <!-- Baris 2: satu tombol sedang ditekan -->
+  <g>
+    <rect x="70" y="150" width="66" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="144" y="150" width="44" height="44" rx="9" fill="#153a29" stroke="#4ade80" stroke-opacity=".5"/>
+    <rect x="196" y="150" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <g filter="url(#kbGlow)" opacity=".85">
+      <rect x="248" y="150" width="44" height="44" rx="9" fill="#a3e635"/>
+    </g>
+    <rect x="248" y="150" width="44" height="44" rx="9" fill="url(#kbLive)"/>
+    <rect x="300" y="150" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="352" y="150" width="44" height="44" rx="9" fill="#153a29" stroke="#4ade80" stroke-opacity=".5"/>
+    <rect x="404" y="150" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="456" y="150" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="508" y="150" width="62" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+  </g>
+
+  <!-- Baris 3 -->
+  <g>
+    <rect x="70" y="204" width="88" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="166" y="204" width="44" height="44" rx="9" fill="#153a29" stroke="#4ade80" stroke-opacity=".5"/>
+    <rect x="218" y="204" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="270" y="204" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="322" y="204" width="44" height="44" rx="9" fill="#153a29" stroke="#4ade80" stroke-opacity=".5"/>
+    <rect x="374" y="204" width="44" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+    <rect x="426" y="204" width="144" height="44" rx="9" fill="#12291f" stroke="#2f4a3d"/>
+  </g>
+
+  <!-- Meter cakupan -->
+  <rect x="70" y="278" width="500" height="8" rx="4" fill="#0d1f18" stroke="#24382e"/>
+  <rect x="70" y="278" width="320" height="8" rx="4" fill="#34d399"/>
+  <circle cx="390" cy="282" r="7" fill="#a3e635"/>
+</svg>

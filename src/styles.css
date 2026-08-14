@@ -11,34 +11,37 @@
    ========================================================================== */
 
 :root {
-    /* Palet dasar (dark) */
-    --bg: #05080f;
-    --bg-soft: #080d18;
+    /* Palet dasar (dark) — latar sengaja diberi rona hijau tipis */
+    --bg: #040a08;
+    --bg-soft: #071310;
     --surface: rgba(255, 255, 255, 0.035);
     --surface-hover: rgba(255, 255, 255, 0.06);
-    --surface-solid: #0c1220;
+    --surface-solid: #0a1512;
     --inset: rgba(0, 0, 0, 0.35);
 
     --border: rgba(255, 255, 255, 0.08);
     --border-strong: rgba(255, 255, 255, 0.16);
 
-    --text: #e8eefb;
-    --text-dim: #9aa8c0;
-    --text-mute: #64748b;
+    --text: #e9f5ee;
+    --text-dim: #9ab5a8;
+    --text-mute: #647a70;
 
-    /* Aksen */
-    --cyan: #22d3ee;
-    --violet: #a78bfa;
-    --emerald: #34d399;
-    --amber: #fbbf24;
-    --rose: #fb7185;
-    --blue: #60a5fa;
+    /* Aksen — keluarga hijau analogus.
+       Hue disebar (lime → green → emerald → teal) supaya elemen yang harus
+       dibedakan (fase tes, kanal audio, kartu info) tetap terbaca. */
+    --brand: #34d399;    /* emerald 400 — aksen utama */
+    --brand-2: #a3e635;  /* lime 400 — pasangan gradien */
+    --lime: var(--brand-2);
+    --emerald: #4ade80;  /* green 400 — sukses / aktif */
+    --teal: #2dd4bf;     /* teal 400 — aksen dingin */
+    --amber: #fbbf24;    /* peringatan */
+    --rose: #fb7185;     /* galat */
 
-    --accent: var(--cyan);
-    --accent-2: var(--violet);
+    --accent: var(--brand);
+    --accent-2: var(--brand-2);
 
     /* Efek */
-    --glow-accent: 0 0 0 1px rgba(34, 211, 238, 0.35), 0 8px 32px -8px rgba(34, 211, 238, 0.45);
+    --glow-accent: 0 0 0 1px rgba(52, 211, 153, 0.35), 0 8px 32px -8px rgba(52, 211, 153, 0.45);
     --shadow-panel: 0 24px 60px -24px rgba(0, 0, 0, 0.8), 0 2px 8px -2px rgba(0, 0, 0, 0.6);
     --shadow-raised: 0 10px 24px -12px rgba(0, 0, 0, 0.75);
 
@@ -58,30 +61,31 @@
 
 /* Light mode */
 [data-theme='light'] {
-    --bg: #eef2f9;
+    --bg: #eef5f0;
     --bg-soft: #ffffff;
     --surface: rgba(255, 255, 255, 0.82);
     --surface-hover: #ffffff;
     --surface-solid: #ffffff;
-    --inset: rgba(15, 23, 42, 0.05);
+    --inset: rgba(6, 42, 30, 0.05);
 
-    --border: rgba(15, 23, 42, 0.09);
-    --border-strong: rgba(15, 23, 42, 0.18);
+    --border: rgba(6, 42, 30, 0.1);
+    --border-strong: rgba(6, 42, 30, 0.2);
 
-    --text: #0f172a;
-    --text-dim: #4b5b74;
-    --text-mute: #7d8ba3;
+    --text: #062a1e;
+    --text-dim: #3f6154;
+    --text-mute: #6d8a7d;
 
-    --cyan: #0891b2;
-    --violet: #7c3aed;
-    --emerald: #059669;
-    --amber: #d97706;
-    --rose: #e11d48;
-    --blue: #2563eb;
+    --brand: #059669;
+    --brand-2: #4d7c0f;
+    --lime: var(--brand-2);
+    --emerald: #16a34a;
+    --teal: #0d9488;
+    --amber: #b45309;
+    --rose: #be123c;
 
     --shadow-panel: 0 24px 50px -28px rgba(15, 23, 42, 0.35), 0 2px 6px -2px rgba(15, 23, 42, 0.08);
     --shadow-raised: 0 8px 20px -10px rgba(15, 23, 42, 0.3);
-    --glow-accent: 0 0 0 1px rgba(8, 145, 178, 0.3), 0 10px 28px -12px rgba(8, 145, 178, 0.45);
+    --glow-accent: 0 0 0 1px rgba(5, 150, 105, 0.3), 0 10px 28px -12px rgba(5, 150, 105, 0.45);
 }
 
 /* ==========================================================================
@@ -118,9 +122,9 @@ body {
     z-index: -2;
     pointer-events: none;
     background:
-        radial-gradient(60rem 34rem at 12% -8%, rgba(34, 211, 238, 0.16), transparent 62%),
-        radial-gradient(48rem 30rem at 88% 4%, rgba(167, 139, 250, 0.18), transparent 60%),
-        radial-gradient(52rem 34rem at 50% 108%, rgba(52, 211, 153, 0.12), transparent 62%);
+        radial-gradient(60rem 34rem at 12% -8%, rgba(52, 211, 153, 0.18), transparent 62%),
+        radial-gradient(48rem 30rem at 88% 4%, rgba(163, 230, 53, 0.16), transparent 60%),
+        radial-gradient(52rem 34rem at 50% 108%, rgba(45, 212, 191, 0.14), transparent 62%);
 }
 
 .app-grid {
@@ -139,9 +143,9 @@ body {
 
 [data-theme='light'] .app-backdrop {
     background:
-        radial-gradient(60rem 34rem at 12% -8%, rgba(8, 145, 178, 0.12), transparent 62%),
-        radial-gradient(48rem 30rem at 88% 4%, rgba(124, 58, 237, 0.12), transparent 60%),
-        radial-gradient(52rem 34rem at 50% 108%, rgba(5, 150, 105, 0.1), transparent 62%);
+        radial-gradient(60rem 34rem at 12% -8%, rgba(5, 150, 105, 0.14), transparent 62%),
+        radial-gradient(48rem 30rem at 88% 4%, rgba(77, 124, 15, 0.12), transparent 60%),
+        radial-gradient(52rem 34rem at 50% 108%, rgba(13, 148, 136, 0.1), transparent 62%);
 }
 
 ::selection {
@@ -271,7 +275,7 @@ h1, h2, h3, h4 {
 .chip-emerald { color: var(--emerald); border-color: color-mix(in srgb, var(--emerald) 38%, transparent); background: color-mix(in srgb, var(--emerald) 12%, transparent); }
 .chip-amber { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 38%, transparent); background: color-mix(in srgb, var(--amber) 12%, transparent); }
 .chip-rose { color: var(--rose); border-color: color-mix(in srgb, var(--rose) 38%, transparent); background: color-mix(in srgb, var(--rose) 12%, transparent); }
-.chip-violet { color: var(--violet); border-color: color-mix(in srgb, var(--violet) 38%, transparent); background: color-mix(in srgb, var(--violet) 12%, transparent); }
+.chip-lime { color: var(--brand-2); border-color: color-mix(in srgb, var(--brand-2) 38%, transparent); background: color-mix(in srgb, var(--brand-2) 12%, transparent); }
 
 kbd, .kbd {
     font-family: var(--font-mono);
@@ -323,14 +327,13 @@ kbd, .kbd {
     gap: 0.85rem;
     text-decoration: none;
     color: inherit;
-    margin-right: auto;
 }
 
 .brand-mark {
     width: 2.9rem;
     height: 2.9rem;
     flex: none;
-    filter: drop-shadow(0 6px 16px rgba(34, 211, 238, 0.35));
+    filter: drop-shadow(0 6px 16px rgba(52, 211, 153, 0.35));
 }
 
 .brand-text {
@@ -347,7 +350,7 @@ kbd, .kbd {
 }
 
 .brand-name .brand-accent {
-    background: linear-gradient(100deg, var(--cyan), var(--violet));
+    background: linear-gradient(100deg, var(--brand), var(--brand-2));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -454,7 +457,7 @@ kbd, .kbd {
 }
 
 .hero-title .grad {
-    background: linear-gradient(100deg, var(--cyan) 0%, var(--violet) 55%, var(--rose) 100%);
+    background: linear-gradient(100deg, var(--brand) 0%, var(--brand-2) 55%, var(--rose) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -531,8 +534,8 @@ kbd, .kbd {
 
 .tab-button.active-tab {
     color: #04121a;
-    background: linear-gradient(140deg, var(--cyan), var(--violet));
-    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--cyan) 80%, transparent);
+    background: linear-gradient(140deg, var(--brand), var(--brand-2));
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent);
 }
 
 [data-theme='light'] .tab-button.active-tab { color: #fff; }
@@ -673,28 +676,28 @@ kbd, .kbd {
 /* Varian warna */
 .btn-primary {
     border-color: transparent;
-    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
     color: #04121a;
-    box-shadow: 0 12px 30px -14px color-mix(in srgb, var(--cyan) 90%, transparent);
+    box-shadow: 0 12px 30px -14px color-mix(in srgb, var(--brand) 90%, transparent);
 }
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
     filter: brightness(1.08);
-    box-shadow: 0 18px 38px -14px color-mix(in srgb, var(--violet) 85%, transparent);
+    box-shadow: 0 18px 38px -14px color-mix(in srgb, var(--brand-2) 85%, transparent);
 }
 [data-theme='light'] .btn-primary { color: #fff; }
 
 .btn-emerald { border-color: color-mix(in srgb, var(--emerald) 45%, transparent); background: color-mix(in srgb, var(--emerald) 14%, transparent); color: var(--emerald); }
 .btn-emerald:hover { background: color-mix(in srgb, var(--emerald) 22%, transparent); }
 
-.btn-blue { border-color: color-mix(in srgb, var(--blue) 45%, transparent); background: color-mix(in srgb, var(--blue) 14%, transparent); color: var(--blue); }
-.btn-blue:hover { background: color-mix(in srgb, var(--blue) 22%, transparent); }
+.btn-teal { border-color: color-mix(in srgb, var(--teal) 45%, transparent); background: color-mix(in srgb, var(--teal) 14%, transparent); color: var(--teal); }
+.btn-teal:hover { background: color-mix(in srgb, var(--teal) 22%, transparent); }
 
 .btn-rose { border-color: color-mix(in srgb, var(--rose) 45%, transparent); background: color-mix(in srgb, var(--rose) 14%, transparent); color: var(--rose); }
 .btn-rose:hover { background: color-mix(in srgb, var(--rose) 22%, transparent); }
 
-.btn-violet { border-color: color-mix(in srgb, var(--violet) 45%, transparent); background: color-mix(in srgb, var(--violet) 14%, transparent); color: var(--violet); }
-.btn-violet:hover { background: color-mix(in srgb, var(--violet) 22%, transparent); }
+.btn-lime { border-color: color-mix(in srgb, var(--brand-2) 45%, transparent); background: color-mix(in srgb, var(--brand-2) 14%, transparent); color: var(--brand-2); }
+.btn-lime:hover { background: color-mix(in srgb, var(--brand-2) 22%, transparent); }
 
 .btn-ghost { background: transparent; color: var(--text-dim); border-color: var(--border); }
 .btn-ghost:hover { color: var(--text); background: var(--surface-hover); }
@@ -795,16 +798,18 @@ kbd, .kbd {
     100% { transform: translateX(120%); opacity: 0; }
 }
 
-/* State: sedang ditekan */
+/* State: sedang ditekan.
+   Memakai lime (bukan emerald) supaya tetap menonjol di atas UI yang
+   keseluruhannya sudah hijau — kontrasnya lewat luminansi, bukan hue. */
 .key.pressed,
 .key.pressed.key-utility {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--emerald) 92%, #fff), var(--emerald));
-    border-color: color-mix(in srgb, var(--emerald) 60%, transparent);
-    border-bottom-color: color-mix(in srgb, var(--emerald) 40%, #000);
-    color: #04150f;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--lime) 92%, #fff), var(--lime));
+    border-color: color-mix(in srgb, var(--lime) 60%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--lime) 40%, #000);
+    color: #14200a;
     transform: translateY(2px);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--emerald) 55%, transparent),
-                0 0 24px -2px color-mix(in srgb, var(--emerald) 65%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lime) 55%, transparent),
+                0 0 26px -2px color-mix(in srgb, var(--lime) 70%, transparent);
 }
 
 /* State: sudah pernah diuji */
@@ -860,7 +865,7 @@ kbd, .kbd {
     height: 100%;
     width: 0%;
     border-radius: 99px;
-    background: linear-gradient(90deg, var(--cyan), var(--emerald));
+    background: linear-gradient(90deg, var(--brand), var(--emerald));
     box-shadow: 0 0 14px color-mix(in srgb, var(--emerald) 70%, transparent);
     transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -927,7 +932,7 @@ kbd, .kbd {
 }
 
 .legend-swatch.is-idle { background: linear-gradient(180deg, var(--surface-hover), var(--surface)); }
-.legend-swatch.is-active { background: var(--emerald); box-shadow: 0 0 10px color-mix(in srgb, var(--emerald) 70%, transparent); }
+.legend-swatch.is-active { background: var(--lime); box-shadow: 0 0 10px color-mix(in srgb, var(--lime) 70%, transparent); }
 .legend-swatch.is-tested { background: color-mix(in srgb, var(--emerald) 25%, transparent); border-color: color-mix(in srgb, var(--emerald) 50%, transparent); }
 
 /* ==========================================================================
@@ -1041,7 +1046,7 @@ kbd, .kbd {
     stroke-dasharray: 408.4;
     stroke-dashoffset: 408.4;
     transition: stroke-dashoffset 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--cyan) 60%, transparent));
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--brand) 60%, transparent));
 }
 
 #needle {
@@ -1156,9 +1161,9 @@ kbd, .kbd {
     height: 100%;
     width: 0%;
     border-radius: 99px;
-    background: linear-gradient(90deg, var(--cyan), var(--violet), var(--rose));
+    background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--rose));
     background-size: 200% 100%;
-    box-shadow: 0 0 16px color-mix(in srgb, var(--violet) 70%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--brand-2) 70%, transparent);
     transition: width 0.3s ease;
     animation: slide-bg 2.5s linear infinite;
 }
@@ -1200,8 +1205,8 @@ kbd, .kbd {
     box-shadow: 0 20px 40px -22px color-mix(in srgb, var(--rc-color, var(--accent)) 80%, transparent);
 }
 
-.result-card.rc-ping     { --rc-color: var(--cyan); }
-.result-card.rc-download { --rc-color: var(--violet); }
+.result-card.rc-ping     { --rc-color: var(--brand); }
+.result-card.rc-download { --rc-color: var(--brand-2); }
 .result-card.rc-upload   { --rc-color: var(--emerald); }
 
 .result-head {
@@ -1257,10 +1262,10 @@ kbd, .kbd {
 }
 
 .connection-status.excellent { background: var(--emerald); box-shadow: 0 0 10px var(--emerald); }
-.connection-status.good      { background: var(--cyan);    box-shadow: 0 0 10px var(--cyan); }
+.connection-status.good      { background: var(--brand);    box-shadow: 0 0 10px var(--brand); }
 .connection-status.fair      { background: var(--amber);   box-shadow: 0 0 10px var(--amber); }
 .connection-status.poor      { background: var(--rose);    box-shadow: 0 0 10px var(--rose); }
-.connection-status.testing   { background: var(--violet);  animation: pulse-soft 1s infinite; }
+.connection-status.testing   { background: var(--brand-2);  animation: pulse-soft 1s infinite; }
 
 @keyframes pulse {
     0%, 100% { opacity: 1; }
@@ -1337,7 +1342,7 @@ kbd, .kbd {
     width: 100%;
     height: 6px;
     border-radius: 99px;
-    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
     background-color: var(--inset);
     outline: none;
     cursor: pointer;
@@ -1765,8 +1770,8 @@ kbd, .kbd {
     gap: 1rem;
     padding: 1.25rem;
     border-radius: var(--r-lg);
-    border: 1px solid color-mix(in srgb, var(--violet) 28%, var(--border));
-    background: linear-gradient(140deg, color-mix(in srgb, var(--violet) 12%, transparent), transparent 65%), var(--surface);
+    border: 1px solid color-mix(in srgb, var(--brand-2) 28%, var(--border));
+    background: linear-gradient(140deg, color-mix(in srgb, var(--brand-2) 12%, transparent), transparent 65%), var(--surface);
 }
 
 .tip-box .tip-icon {
@@ -1776,9 +1781,9 @@ kbd, .kbd {
     height: 2.25rem;
     flex: none;
     border-radius: var(--r-sm);
-    border: 1px solid color-mix(in srgb, var(--violet) 35%, transparent);
-    background: color-mix(in srgb, var(--violet) 14%, transparent);
-    color: var(--violet);
+    border: 1px solid color-mix(in srgb, var(--brand-2) 35%, transparent);
+    background: color-mix(in srgb, var(--brand-2) 14%, transparent);
+    color: var(--brand-2);
 }
 
 .tip-box h3 {
@@ -1796,7 +1801,7 @@ kbd, .kbd {
     gap: 0.3rem;
 }
 
-.tip-list li::marker { color: var(--violet); }
+.tip-list li::marker { color: var(--brand-2); }
 
 /* ==========================================================================
    11. TOAST
@@ -1833,7 +1838,7 @@ kbd, .kbd {
 .toast svg { width: 1.05rem; height: 1.05rem; flex: none; }
 .toast.is-success svg { color: var(--emerald); }
 .toast.is-error svg { color: var(--rose); }
-.toast.is-info svg { color: var(--cyan); }
+.toast.is-info svg { color: var(--brand); }
 
 @keyframes toast-in {
     from { opacity: 0; transform: translateX(16px) scale(0.96); }
@@ -2006,10 +2011,635 @@ kbd, .kbd {
 .text-mute { color: var(--text-mute); }
 .text-emerald { color: var(--emerald); }
 .text-rose { color: var(--rose); }
-.text-cyan { color: var(--cyan); }
-.text-violet { color: var(--violet); }
+.text-brand { color: var(--brand); }
+.text-lime { color: var(--brand-2); }
 .text-amber { color: var(--amber); }
 .text-sm { font-size: 0.85rem; }
 .text-xs { font-size: 0.78rem; }
 .fw-600 { font-weight: 600; }
 .fw-700 { font-weight: 700; }
+
+/* ==========================================================================
+   15. UKURAN IKON & JARAK BARIS KEYBOARD
+   (menggantikan inline style agar markup tetap bersih)
+   ========================================================================== */
+
+.icon-xs { width: 0.85rem; height: 0.85rem; }
+.icon-sm { width: 1rem; height: 1rem; }
+.btn-icon-sm { width: 1rem; height: 1rem; }
+
+.key-row { gap: 0; }
+.key-row-tight { gap: 0.15rem; }
+
+/* Celah antar kelompok tombol fungsi */
+.key-gap { margin-left: 0.85rem; }
+.key-gap-lg { margin-left: 1rem; }
+
+/* ==========================================================================
+   16. ANGKA LIVE SPEED TEST
+   ========================================================================== */
+
+.live-stats {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+}
+
+.live-stat {
+    flex: 1 1 130px;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.live-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+}
+
+.live-value {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.live-unit-badge {
+    display: grid;
+    place-items: center;
+    padding: 0 0.85rem;
+    border-radius: var(--r-md);
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   17. GRAFIK THROUGHPUT REALTIME
+   ========================================================================== */
+
+.chart-shell {
+    position: relative;
+    margin-bottom: 1.75rem;
+    padding: 0.85rem 0.85rem 0.5rem;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    background: var(--inset);
+    overflow: hidden;
+}
+
+.chart-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.chart-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.chart-note {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--text-mute);
+}
+
+#speed-chart {
+    display: block;
+    width: 100%;
+    height: 150px;
+}
+
+/* ==========================================================================
+   18. SUB-NILAI KARTU HASIL
+   ========================================================================== */
+
+.result-sub {
+    margin-top: 0.5rem;
+    min-height: 1.1em;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-mute);
+}
+
+@media (max-width: 640px) {
+    .live-stat { flex-basis: 100px; padding: 0.6rem 0.5rem; }
+    .live-value { font-size: 1rem; }
+    #speed-chart { height: 120px; }
+    .key-gap { margin-left: 0.4rem; }
+    .key-gap-lg { margin-left: 0.5rem; }
+}
+
+/* ==========================================================================
+   19. PEMILIH SERVER UJI (SPEED TEST)
+   ========================================================================== */
+
+.target-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.85rem;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.25rem;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.target-row .preset-row {
+    margin-top: 0;
+}
+
+.target-row .preset-chip:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.target-note {
+    flex: 1 1 100%;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--text-mute);
+}
+
+.target-note.is-warning {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: var(--r-sm);
+    border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent);
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+    color: var(--amber);
+}
+
+/* ==========================================================================
+   20. VIEW SWITCHER (beranda ↔ alat uji)
+   ========================================================================== */
+
+.view[hidden] {
+    display: none !important;
+}
+
+.view {
+    animation: view-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes view-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Navigasi utama di topbar */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 1.5rem;
+    margin-right: auto;
+}
+
+.nav-link {
+    padding: 0.45rem 0.85rem;
+    border: 0;
+    border-radius: var(--r-md);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+}
+
+.nav-link.is-active {
+    color: var(--brand);
+    background: color-mix(in srgb, var(--brand) 12%, transparent);
+}
+
+/* ==========================================================================
+   21. LANDING — HERO
+   ========================================================================== */
+
+.landing-hero {
+    text-align: center;
+    padding: clamp(2.5rem, 8vw, 5.5rem) 0 clamp(2rem, 5vw, 3.5rem);
+}
+
+.landing-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 7vw, 4.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0;
+}
+
+.landing-title .grad {
+    background: linear-gradient(100deg, var(--teal) 0%, var(--brand) 45%, var(--lime) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.landing-sub {
+    margin: 1.35rem auto 0;
+    max-width: 62ch;
+    color: var(--text-dim);
+    font-size: clamp(0.98rem, 2vw, 1.14rem);
+    line-height: 1.65;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-top: 2.25rem;
+}
+
+/* Baris statistik di bawah hero */
+.metric-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    max-width: 780px;
+    margin: 3rem auto 0;
+}
+
+.metric {
+    padding: 1.1rem 1rem;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    text-align: center;
+}
+
+.metric-value {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(100deg, var(--brand), var(--lime));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.metric-label {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 0.78rem;
+    color: var(--text-mute);
+}
+
+/* ==========================================================================
+   22. SECTION
+   ========================================================================== */
+
+.section {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 0;
+}
+
+.section-head {
+    max-width: 640px;
+    margin: 0 auto clamp(1.75rem, 4vw, 2.75rem);
+    text-align: center;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.35rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0.75rem 0 0;
+}
+
+.section-sub {
+    margin: 0.85rem 0 0;
+    color: var(--text-dim);
+    font-size: 0.97rem;
+    line-height: 1.65;
+}
+
+/* ==========================================================================
+   23. PROJECT CARD
+   Port desain komponen React `ProjectCard` ke CSS biasa.
+   Padanan kelas Tailwind aslinya dicatat agar mudah dibandingkan.
+   ========================================================================== */
+
+/* grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 */
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+    .project-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl
+   border bg-card shadow-sm transition-all duration-500 ease-in-out
+   hover:-translate-y-2 hover:shadow-xl */
+.project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    background:
+        linear-gradient(180deg, var(--surface-hover), transparent 45%),
+        color-mix(in srgb, var(--surface-solid) 88%, transparent);
+    color: var(--text);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out, border-color 0.5s ease-in-out;
+    text-align: left;
+    padding: 0;
+    font: inherit;
+    width: 100%;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+    transform: translateY(-0.5rem);
+    border-color: color-mix(in srgb, var(--brand) 42%, transparent);
+    box-shadow: 0 22px 45px -18px rgba(0, 0, 0, 0.65),
+                0 0 0 1px color-mix(in srgb, var(--brand) 22%, transparent);
+}
+
+/* aspect-video overflow-hidden */
+.project-card__media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--inset);
+}
+
+/* h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 */
+.project-card__img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease-in-out;
+}
+
+.project-card:hover .project-card__img,
+.project-card:focus-visible .project-card__img {
+    transform: scale(1.1);
+}
+
+/* Label kecil di atas gambar */
+.project-card__badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 99px;
+    border: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
+    background: color-mix(in srgb, var(--surface-solid) 85%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--brand);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.project-card__badge svg {
+    width: 0.85rem;
+    height: 0.85rem;
+}
+
+/* flex flex-1 flex-col p-6 */
+.project-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+/* text-xl font-semibold group-hover:text-primary transition-colors duration-300 */
+.project-card__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+    transition: color 0.3s ease-in-out;
+}
+
+.project-card:hover .project-card__title,
+.project-card:focus-visible .project-card__title {
+    color: var(--brand);
+}
+
+/* mt-3 flex-1 text-muted-foreground */
+.project-card__desc {
+    flex: 1;
+    margin: 0.75rem 0 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+/* Daftar poin kecil di dalam kartu */
+.project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+}
+
+.project-card__tag {
+    padding: 0.22rem 0.55rem;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-mute);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+}
+
+/* mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline */
+.project-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    color: var(--brand);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: gap 0.3s ease-in-out;
+}
+
+.project-card:hover .project-card__cta {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* h-4 w-4 group-hover/button:translate-x-1 */
+.project-card__cta svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.project-card:hover .project-card__cta svg,
+.project-card__cta:hover svg {
+    transform: translateX(0.25rem);
+}
+
+/* ==========================================================================
+   24. LANDING — CARA KERJA & CTA
+   ========================================================================== */
+
+.step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    counter-reset: step;
+}
+
+.step {
+    position: relative;
+    padding: 1.5rem 1.35rem 1.35rem;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.step::before {
+    counter-increment: step;
+    content: counter(step, decimal-leading-zero);
+    display: block;
+    margin-bottom: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: color-mix(in srgb, var(--brand) 55%, transparent);
+}
+
+.step h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+.step p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 0.87rem;
+    line-height: 1.6;
+}
+
+.cta-panel {
+    position: relative;
+    overflow: hidden;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding: clamp(2rem, 5vw, 3.25rem);
+    border-radius: var(--r-xl);
+    border: 1px solid color-mix(in srgb, var(--brand) 28%, var(--border));
+    background:
+        radial-gradient(60% 120% at 15% 0%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 70%),
+        radial-gradient(50% 120% at 90% 100%, color-mix(in srgb, var(--lime) 14%, transparent), transparent 70%),
+        color-mix(in srgb, var(--surface-solid) 88%, transparent);
+    text-align: center;
+}
+
+.cta-panel h2 {
+    font-size: clamp(1.5rem, 3.8vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.cta-panel p {
+    margin: 0.85rem auto 0;
+    max-width: 52ch;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+/* ==========================================================================
+   25. HEADER RINGKAS DI VIEW ALAT UJI
+   ========================================================================== */
+
+.tools-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: clamp(1.75rem, 4vw, 2.75rem) 0 1.5rem;
+}
+
+.tools-head h1 {
+    font-size: clamp(1.6rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0.4rem 0 0;
+}
+
+.tools-head p {
+    margin: 0.5rem 0 0;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    max-width: 58ch;
+}
+
+@media (max-width: 640px) {
+    .nav-links { margin-left: 0.25rem; }
+    .nav-link { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+    .project-card__body { padding: 1.15rem; }
+    .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
