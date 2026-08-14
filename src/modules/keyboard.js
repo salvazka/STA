@@ -5,6 +5,7 @@
 import { $, $$ } from '../lib/dom.js';
 import { refreshIcons } from '../lib/icons.js';
 import { showToast } from '../lib/toast.js';
+import { bongoPress, bongoRelease, bongoReset, mountBongo } from './bongo.js';
 
 /* Tombol yang tetap diteruskan ke browser agar pengguna tidak terjebak. */
 const PASSTHROUGH = new Set(['F5', 'F11', 'F12', 'Escape']);
@@ -28,7 +29,14 @@ export function mountKeyboard() {
     stats.total = keyMap.size;
 
     $('keyboard-reset')?.addEventListener('click', resetKeyboardTest);
+    mountBongo({ onToggle: refreshIcons });
     render();
+}
+
+/** Dipanggil saat meninggalkan modul keyboard supaya telapak tidak tertinggal
+    di posisi menekan (keyup bisa jatuh di luar modul ini). */
+export function releaseKeyboardState() {
+    bongoReset();
 }
 
 function render() {
@@ -85,6 +93,7 @@ export function resetKeyboardTest() {
     stats.lastChar = null;
     stats.startedAt = null;
 
+    bongoReset();
     render();
     showToast('Tes keyboard direset', 'info', 1600);
 }
@@ -115,6 +124,8 @@ export function handleKeyboardKeydown(event) {
     stats.lastCode = event.code;
     stats.lastChar = describe(event);
 
+    bongoPress(event.code, event.repeat);
+
     if (!el.classList.contains('pressed')) {
         el.classList.add('pressed');
         stats.pressed.add(event.code);
@@ -124,6 +135,8 @@ export function handleKeyboardKeydown(event) {
 }
 
 export function handleKeyboardKeyup(event) {
+    bongoRelease(event.code);
+
     const el = keyMap.get(event.code);
     if (!el) return;
 

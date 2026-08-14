@@ -23,7 +23,7 @@ export function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
 
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#eef5f0' : '#040a08');
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#fffdf5' : '#10141c');
 
     persist(theme);
 }
@@ -35,8 +35,10 @@ export function toggleTheme() {
 }
 
 export function mountTheme() {
+    // Mode "kertas" (terang) adalah default sistem desain; preferensi OS
+    // tetap dihormati karena mode gelap memakai bahasa visual yang sama.
     const stored = read()
-        ?? (window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        ?? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
     applyTheme(stored);
     $('theme-toggle')?.addEventListener('click', toggleTheme);

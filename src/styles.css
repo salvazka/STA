@@ -1,91 +1,115 @@
 /* ==========================================================================
-   SERBA TESTER APP — "DIAGNOSTIC HUD" UI
-   Tema: konsol diagnostik gelap dengan aksen neon, glassmorphism,
-   dan readout monospace. Mendukung dark (default) & light mode.
+   SERBA TESTER APP — "PLAYFUL GEOMETRIC" UI
+   Konsep: grid stabil, dekorasi liar. Konten tetap tenang & terbaca,
+   sementara sekelilingnya hidup: bentuk primitif, pola titik, dan
+   bayangan keras tanpa blur (kesan stiker / kertas potong).
+
+   Mode terang ("kertas") adalah default sesuai sistem desain.
+   Mode gelap tetap tersedia dengan bahasa visual yang sama.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Space+Grotesk:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400..800&family=Plus+Jakarta+Sans:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap');
 
 /* ==========================================================================
    1. DESIGN TOKENS
    ========================================================================== */
 
 :root {
-    /* Palet dasar (dark) — latar sengaja diberi rona hijau tipis */
-    --bg: #040a08;
-    --bg-soft: #071310;
-    --surface: rgba(255, 255, 255, 0.035);
-    --surface-hover: rgba(255, 255, 255, 0.06);
-    --surface-solid: #0a1512;
-    --inset: rgba(0, 0, 0, 0.35);
+    color-scheme: light;
 
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.16);
+    /* --- Kertas & tinta --- */
+    --bg: #fffdf5;            /* krem hangat, kesan kertas */
+    --bg-soft: #ffffff;
+    --surface: #ffffff;
+    --surface-hover: #f8fafc;
+    --surface-solid: #ffffff;
+    --inset: #f1f5f9;
+    --muted: #f1f5f9;
 
-    --text: #e9f5ee;
-    --text-dim: #9ab5a8;
-    --text-mute: #647a70;
+    --ink: #1e293b;           /* warna garis & bayangan keras */
+    --text: #1e293b;
+    --text-dim: #64748b;
+    --text-mute: #94a3b8;
 
-    /* Aksen — keluarga hijau analogus.
-       Hue disebar (lime → green → emerald → teal) supaya elemen yang harus
-       dibedakan (fase tes, kanal audio, kartu info) tetap terbaca. */
-    --brand: #34d399;    /* emerald 400 — aksen utama */
-    --brand-2: #a3e635;  /* lime 400 — pasangan gradien */
-    --lime: var(--brand-2);
-    --emerald: #4ade80;  /* green 400 — sukses / aktif */
-    --teal: #2dd4bf;     /* teal 400 — aksen dingin */
-    --amber: #fbbf24;    /* peringatan */
-    --rose: #fb7185;     /* galat */
+    --border: rgba(30, 41, 59, 0.12);   /* pemisah halus di dalam kartu */
+    --border-strong: var(--ink);        /* garis "chunky" khas sistem ini */
+    --border-w: 2px;
+    --dot: rgba(30, 41, 59, 0.16);      /* titik pola latar */
+
+    /* --- Palet ---
+       Hijau dipertahankan sebagai warna brand (permintaan sebelumnya),
+       sedangkan violet/pink/amber dipakai ROTASIONAL untuk dekorasi
+       sehingga tetap mendapat efek "confetti" yang diminta sistem desain. */
+    --brand: #15a34a;         /* hijau — aksi utama */
+    --brand-ink: #ffffff;     /* teks di atas brand */
+    --brand-2: #fbbf24;       /* amber — pasangan brand */
+    --violet: #8b5cf6;
+    --pink: #f472b6;
+    --amber: #fbbf24;
+    --lime: #a3e635;
+    --emerald: #34d399;
+    --teal: #2dd4bf;
+    --rose: #fb7185;
 
     --accent: var(--brand);
     --accent-2: var(--brand-2);
 
-    /* Efek */
-    --glow-accent: 0 0 0 1px rgba(52, 211, 153, 0.35), 0 8px 32px -8px rgba(52, 211, 153, 0.45);
-    --shadow-panel: 0 24px 60px -24px rgba(0, 0, 0, 0.8), 0 2px 8px -2px rgba(0, 0, 0, 0.6);
-    --shadow-raised: 0 10px 24px -12px rgba(0, 0, 0, 0.75);
+    /* --- Bayangan keras (tanpa blur) --- */
+    --pop-ink: var(--ink);
+    --pop: 4px 4px 0 0 var(--pop-ink);
+    --pop-hover: 6px 6px 0 0 var(--pop-ink);
+    --pop-active: 2px 2px 0 0 var(--pop-ink);
+    --pop-lg: 8px 8px 0 0 var(--pop-ink);
+    --pop-soft: 8px 8px 0 0 #e2e8f0;
 
-    /* Bentuk */
+    /* Alias agar komponen lama otomatis ikut bahasa visual baru */
+    --shadow-panel: var(--pop-lg);
+
+    /* --- Bentuk --- */
     --r-sm: 8px;
-    --r-md: 12px;
-    --r-lg: 18px;
-    --r-xl: 26px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 24px;
+    --r-full: 9999px;
 
-    /* Font */
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    /* --- Gerak: memantul, bukan datar --- */
+    --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* --- Tipografi --- */
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 
     --nav-h: 68px;
 }
 
-/* Light mode */
-[data-theme='light'] {
-    --bg: #eef5f0;
-    --bg-soft: #ffffff;
-    --surface: rgba(255, 255, 255, 0.82);
-    --surface-hover: #ffffff;
-    --surface-solid: #ffffff;
-    --inset: rgba(6, 42, 30, 0.05);
+/* Mode gelap — bahasa visual sama (garis chunky + bayangan keras),
+   hanya tinta bayangannya diganti agar tetap terlihat di latar gelap. */
+[data-theme='dark'] {
+    color-scheme: dark;
 
-    --border: rgba(6, 42, 30, 0.1);
-    --border-strong: rgba(6, 42, 30, 0.2);
+    --bg: #10141c;
+    --bg-soft: #161c27;
+    --surface: #1a2130;
+    --surface-hover: #232c3d;
+    --surface-solid: #1a2130;
+    --inset: #0b0f16;
+    --muted: #232c3d;
 
-    --text: #062a1e;
-    --text-dim: #3f6154;
-    --text-mute: #6d8a7d;
+    --ink: #04070c;
+    --text: #f1f5f9;
+    --text-dim: #a3b0c2;
+    --text-mute: #6b7b90;
 
-    --brand: #059669;
-    --brand-2: #4d7c0f;
-    --lime: var(--brand-2);
-    --emerald: #16a34a;
-    --teal: #0d9488;
-    --amber: #b45309;
-    --rose: #be123c;
+    --border: rgba(241, 245, 249, 0.14);
+    --border-strong: rgba(241, 245, 249, 0.82);
+    --dot: rgba(241, 245, 249, 0.14);
 
-    --shadow-panel: 0 24px 50px -28px rgba(15, 23, 42, 0.35), 0 2px 6px -2px rgba(15, 23, 42, 0.08);
-    --shadow-raised: 0 8px 20px -10px rgba(15, 23, 42, 0.3);
-    --glow-accent: 0 0 0 1px rgba(5, 150, 105, 0.3), 0 10px 28px -12px rgba(5, 150, 105, 0.45);
+    --brand: #34d399;
+    --brand-ink: #04231a;
+    --brand-2: #fbbf24;
+
+    --pop-soft: 8px 8px 0 0 #04070c;
 }
 
 /* ==========================================================================
@@ -115,37 +139,30 @@ body {
     overflow-x: hidden;
 }
 
-/* Lapisan dekoratif: aurora glow + grid teknikal */
+/* Lapisan dekoratif: gumpalan warna besar + pola titik.
+   "Grid stabil, dekorasi liar" — semuanya di belakang konten dan
+   tidak pernah menangkap pointer. */
 .app-backdrop {
     position: fixed;
     inset: 0;
     z-index: -2;
     pointer-events: none;
     background:
-        radial-gradient(60rem 34rem at 12% -8%, rgba(52, 211, 153, 0.18), transparent 62%),
-        radial-gradient(48rem 30rem at 88% 4%, rgba(163, 230, 53, 0.16), transparent 60%),
-        radial-gradient(52rem 34rem at 50% 108%, rgba(45, 212, 191, 0.14), transparent 62%);
+        radial-gradient(30rem 30rem at 88% -8%, color-mix(in srgb, var(--brand-2) 34%, transparent), transparent 64%),
+        radial-gradient(26rem 26rem at 2% 16%, color-mix(in srgb, var(--pink) 26%, transparent), transparent 62%),
+        radial-gradient(30rem 30rem at 62% 106%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 64%);
 }
 
+/* Pola titik dalam formasi rapi (bukan garis teknikal lagi) */
 .app-grid {
     position: fixed;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.5;
-    background-image:
-        linear-gradient(to right, var(--border) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 78%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 78%);
-}
-
-[data-theme='light'] .app-backdrop {
-    background:
-        radial-gradient(60rem 34rem at 12% -8%, rgba(5, 150, 105, 0.14), transparent 62%),
-        radial-gradient(48rem 30rem at 88% 4%, rgba(77, 124, 15, 0.12), transparent 60%),
-        radial-gradient(52rem 34rem at 50% 108%, rgba(13, 148, 136, 0.1), transparent 62%);
+    background-image: radial-gradient(var(--dot) 1.6px, transparent 1.7px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 25%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 25%, transparent 80%);
 }
 
 ::selection {
@@ -492,12 +509,10 @@ kbd, .kbd {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
-    border-radius: var(--r-xl);
-    border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface-solid) 82%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: var(--shadow-raised);
+    border-radius: var(--r-full);
+    border: var(--border-w) solid var(--ink);
+    background: var(--surface);
+    box-shadow: var(--pop);
 }
 
 .tabs::-webkit-scrollbar { display: none; }
@@ -508,18 +523,18 @@ kbd, .kbd {
     align-items: center;
     gap: 0.5rem;
     flex: none;
-    padding: 0.68rem 1.1rem;
-    border: 0;
-    border-radius: calc(var(--r-xl) - 6px);
+    padding: 0.62rem 1.1rem;
+    border: var(--border-w) solid transparent;
+    border-radius: var(--r-full);
     background: transparent;
     color: var(--text-dim);
     font-family: var(--font-body);
     font-size: 0.88rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.01em;
     cursor: pointer;
     white-space: nowrap;
-    transition: color 0.2s, background 0.2s, transform 0.15s;
+    transition: color 0.25s, background 0.25s, transform 0.3s var(--ease-pop), box-shadow 0.3s var(--ease-pop);
 }
 
 .tab-button svg {
@@ -528,51 +543,55 @@ kbd, .kbd {
 }
 
 .tab-button:hover {
-    color: var(--text);
-    background: var(--surface-hover);
+    color: var(--ink);
+    background: var(--brand-2);
+    border-color: var(--ink);
 }
 
+/* Tab aktif jadi "stiker" penuh: garis tinta + bayangan keras */
 .tab-button.active-tab {
-    color: #04121a;
-    background: linear-gradient(140deg, var(--brand), var(--brand-2));
-    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent);
+    color: var(--brand-ink);
+    background: var(--brand);
+    border-color: var(--ink);
+    box-shadow: var(--pop-active);
 }
-
-[data-theme='light'] .tab-button.active-tab { color: #fff; }
 
 .tab-button.active-tab:hover {
-    color: #04121a;
-    transform: translateY(-1px);
+    color: var(--brand-ink);
+    background: var(--brand);
+    transform: translate(-1px, -1px);
+    box-shadow: var(--pop);
 }
-
-[data-theme='light'] .tab-button.active-tab:hover { color: #fff; }
 
 /* --- Panel utama --- */
 .panel-stack {
     position: relative;
 }
 
+/* Panel utama sebagai lembar kertas: garis tinta tebal + bayangan keras */
 .panel {
     position: relative;
-    border-radius: var(--r-xl);
-    border: 1px solid var(--border);
-    background:
-        linear-gradient(180deg, var(--surface-hover), transparent 42%),
-        color-mix(in srgb, var(--surface-solid) 88%, transparent);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: var(--shadow-panel);
+    border-radius: var(--r-lg);
+    border: var(--border-w) solid var(--ink);
+    background: var(--surface);
+    box-shadow: var(--pop-lg);
     overflow: hidden;
 }
 
-/* Garis cahaya tipis di tepi atas panel */
+/* Pita warna rotasional di tepi atas panel — sentuhan "confetti" */
 .panel::before {
     content: '';
     position: absolute;
     inset: 0 0 auto;
-    height: 1px;
-    background: linear-gradient(to right, transparent, color-mix(in srgb, var(--accent) 70%, transparent), transparent);
-    opacity: 0.7;
+    height: 6px;
+    background: linear-gradient(
+        to right,
+        var(--brand) 0 25%,
+        var(--brand-2) 25% 50%,
+        var(--pink) 50% 75%,
+        var(--violet) 75% 100%
+    );
+    border-bottom: var(--border-w) solid var(--ink);
 }
 
 .panel-body {
@@ -580,7 +599,7 @@ kbd, .kbd {
 }
 
 .tester-content {
-    animation: panel-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: panel-in 0.4s var(--ease-pop) both;
 }
 
 @keyframes panel-in {
@@ -619,88 +638,107 @@ kbd, .kbd {
    5. BUTTONS
    ========================================================================== */
 
+/* "Candy Button": pil, garis tinta tebal, bayangan keras.
+   Hover mengangkat elemen (bayangan memanjang), aktif menekannya
+   (bayangan menyusut) — terasa seperti tombol fisik. */
 .button-action,
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.55rem;
-    padding: 0.72rem 1.4rem;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--r-md);
+    padding: 0.72rem 1.5rem;
+    min-height: 44px;
+    border: var(--border-w) solid var(--ink);
+    border-radius: var(--r-full);
     background: var(--surface);
     color: var(--text);
     font-family: var(--font-body);
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.01em;
     cursor: pointer;
     text-decoration: none;
-    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s, background 0.2s, border-color 0.2s, filter 0.2s;
+    box-shadow: var(--pop);
+    transition: transform 0.3s var(--ease-pop), box-shadow 0.3s var(--ease-pop), background 0.2s, color 0.2s;
 }
 
 .button-action:hover,
 .btn:hover {
     background: var(--surface-hover);
-    border-color: var(--border-strong);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-raised);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pop-hover);
 }
 
 .button-action:active,
 .btn:active {
-    transform: translateY(0) scale(0.985);
-    box-shadow: none;
+    transform: translate(2px, 2px);
+    box-shadow: var(--pop-active);
 }
 
 .button-action:disabled,
 .btn:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
-    filter: saturate(30%);
+    opacity: 0.45;
+    filter: saturate(25%);
     transform: none !important;
-    box-shadow: none !important;
+    box-shadow: var(--pop-active) !important;
 }
 
 .btn-lg {
     padding: 0.95rem 2rem;
+    min-height: 52px;
     font-size: 1rem;
-    border-radius: var(--r-lg);
 }
 
 .btn-sm {
-    padding: 0.5rem 0.9rem;
+    padding: 0.45rem 1rem;
+    min-height: 36px;
     font-size: 0.8rem;
 }
 
-/* Varian warna */
+/* Varian warna — semuanya tetap memakai garis & bayangan tinta,
+   jadi tombol berwarna apa pun tetap satu bahasa visual. */
 .btn-primary {
-    border-color: transparent;
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    color: #04121a;
-    box-shadow: 0 12px 30px -14px color-mix(in srgb, var(--brand) 90%, transparent);
+    background: var(--brand);
+    color: var(--brand-ink);
 }
-.btn-primary:hover {
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    filter: brightness(1.08);
-    box-shadow: 0 18px 38px -14px color-mix(in srgb, var(--brand-2) 85%, transparent);
+.btn-primary:hover { background: color-mix(in srgb, var(--brand) 88%, #fff); }
+
+.btn-emerald { background: var(--emerald); color: #04231a; }
+.btn-emerald:hover { background: color-mix(in srgb, var(--emerald) 85%, #fff); }
+
+.btn-teal { background: var(--teal); color: #052e2b; }
+.btn-teal:hover { background: color-mix(in srgb, var(--teal) 85%, #fff); }
+
+.btn-rose { background: var(--rose); color: #3f0713; }
+.btn-rose:hover { background: color-mix(in srgb, var(--rose) 85%, #fff); }
+
+.btn-lime { background: var(--violet); color: #fff; }
+.btn-lime:hover { background: color-mix(in srgb, var(--violet) 85%, #fff); }
+
+/* Tombol sekunder: transparan, terisi amber saat disentuh */
+.btn-ghost {
+    background: transparent;
+    color: var(--text);
+    box-shadow: none;
 }
-[data-theme='light'] .btn-primary { color: #fff; }
+.btn-ghost:hover {
+    color: var(--ink);
+    background: var(--brand-2);
+    box-shadow: var(--pop);
+}
+.btn-ghost:active { box-shadow: var(--pop-active); }
 
-.btn-emerald { border-color: color-mix(in srgb, var(--emerald) 45%, transparent); background: color-mix(in srgb, var(--emerald) 14%, transparent); color: var(--emerald); }
-.btn-emerald:hover { background: color-mix(in srgb, var(--emerald) 22%, transparent); }
-
-.btn-teal { border-color: color-mix(in srgb, var(--teal) 45%, transparent); background: color-mix(in srgb, var(--teal) 14%, transparent); color: var(--teal); }
-.btn-teal:hover { background: color-mix(in srgb, var(--teal) 22%, transparent); }
-
-.btn-rose { border-color: color-mix(in srgb, var(--rose) 45%, transparent); background: color-mix(in srgb, var(--rose) 14%, transparent); color: var(--rose); }
-.btn-rose:hover { background: color-mix(in srgb, var(--rose) 22%, transparent); }
-
-.btn-lime { border-color: color-mix(in srgb, var(--brand-2) 45%, transparent); background: color-mix(in srgb, var(--brand-2) 14%, transparent); color: var(--brand-2); }
-.btn-lime:hover { background: color-mix(in srgb, var(--brand-2) 22%, transparent); }
-
-.btn-ghost { background: transparent; color: var(--text-dim); border-color: var(--border); }
-.btn-ghost:hover { color: var(--text); background: var(--surface-hover); }
+/* Ikon di dalam tombol utama duduk dalam bulatan putih (aturan sistem:
+   ikon tidak pernah melayang sendiri) */
+.btn-primary > svg,
+.btn-primary > i {
+    box-sizing: content-box;
+    padding: 3px;
+    border-radius: var(--r-full);
+    background: rgba(255, 255, 255, 0.22);
+}
 
 .spinner {
     width: 1.05rem;
@@ -867,7 +905,7 @@ kbd, .kbd {
     border-radius: 99px;
     background: linear-gradient(90deg, var(--brand), var(--emerald));
     box-shadow: 0 0 14px color-mix(in srgb, var(--emerald) 70%, transparent);
-    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: width 0.35s var(--ease-pop);
 }
 
 .coverage-value {
@@ -1045,7 +1083,7 @@ kbd, .kbd {
     stroke-linecap: round;
     stroke-dasharray: 408.4;
     stroke-dashoffset: 408.4;
-    transition: stroke-dashoffset 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: stroke-dashoffset 0.45s var(--ease-pop);
     filter: drop-shadow(0 0 10px color-mix(in srgb, var(--brand) 60%, transparent));
 }
 
@@ -1060,7 +1098,7 @@ kbd, .kbd {
     background: linear-gradient(to top, var(--text-mute), var(--text));
     transform-origin: bottom center;
     transform: translateX(-50%) rotate(-90deg);
-    transition: transform 0.85s cubic-bezier(0.34, 1.4, 0.64, 1);
+    transition: transform 0.85s var(--ease-pop);
     z-index: 4;
     box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
 }
@@ -1187,7 +1225,7 @@ kbd, .kbd {
     border: 1px solid var(--border);
     background: linear-gradient(165deg, var(--surface-hover), transparent 65%), var(--surface);
     overflow: hidden;
-    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s, box-shadow 0.25s;
+    transition: transform 0.25s var(--ease-pop), border-color 0.25s, box-shadow 0.25s;
 }
 
 .result-card::before {
@@ -1672,7 +1710,7 @@ kbd, .kbd {
     border: 1px solid var(--border);
     background: linear-gradient(170deg, var(--surface-hover), transparent 60%), var(--surface);
     overflow: hidden;
-    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s;
+    transition: transform 0.25s var(--ease-pop), border-color 0.25s;
 }
 
 .info-card:hover {
@@ -1831,7 +1869,7 @@ kbd, .kbd {
     box-shadow: var(--shadow-panel);
     color: var(--text);
     font-size: 0.86rem;
-    animation: toast-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: toast-in 0.3s var(--ease-pop) both;
 }
 
 .toast.is-leaving { animation: toast-out 0.25s ease-in both; }
@@ -2209,7 +2247,7 @@ kbd, .kbd {
 }
 
 .view {
-    animation: view-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: view-in 0.45s var(--ease-pop) both;
 }
 
 @keyframes view-in {
@@ -2642,4 +2680,766 @@ kbd, .kbd {
     .nav-link { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
     .project-card__body { padding: 1.15rem; }
     .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ==========================================================================
+   26. BONGO CAT
+   Pose diatur lewat class pada wadah SVG (.is-left-down / .is-right-down),
+   bukan dengan menukar berkas gambar — jadi tidak ada kedip dan bisa
+   ditransisikan.
+   ========================================================================== */
+
+.bongo-wrap[hidden] {
+    display: none !important;
+}
+
+.bongo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+}
+
+.bongo {
+    width: 100%;
+    max-width: 300px;
+    filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.45));
+}
+
+.bongo-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+}
+
+/* --- Warna --- */
+
+.bongo-fur {
+    fill: #f3fbf6;
+    stroke: #0b1d16;
+    stroke-width: 3.5;
+    stroke-linejoin: round;
+}
+
+[data-theme='light'] .bongo-fur {
+    fill: #ffffff;
+    stroke: #0b2a20;
+}
+
+.bongo-ear-inner {
+    fill: color-mix(in srgb, var(--brand) 55%, #f3fbf6);
+    stroke: none;
+}
+
+.bongo-eye {
+    fill: #0b1d16;
+}
+
+.bongo-eye-shine {
+    fill: #f3fbf6;
+}
+
+.bongo-mouth,
+.bongo-whisker line {
+    fill: none;
+    stroke: #0b1d16;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+}
+
+.bongo-whisker line {
+    stroke-width: 2.2;
+    opacity: 0.55;
+}
+
+.bongo-arm {
+    fill: none;
+    stroke: #f3fbf6;
+    stroke-width: 17;
+    stroke-linecap: round;
+}
+
+.bongo-hand {
+    fill: #f3fbf6;
+    stroke: #0b1d16;
+    stroke-width: 3.5;
+}
+
+[data-theme='light'] .bongo-arm,
+[data-theme='light'] .bongo-hand {
+    fill: #ffffff;
+    stroke: #0b2a20;
+}
+
+[data-theme='light'] .bongo-arm {
+    stroke: #ffffff;
+}
+
+/* Garis luar lengan digambar terpisah agar tidak memotong badan */
+.bongo-paw {
+    transition: transform 0.07s var(--ease-pop);
+}
+
+/* Meja */
+.bongo-desk {
+    fill: color-mix(in srgb, var(--brand) 22%, var(--surface-solid));
+    stroke: color-mix(in srgb, var(--brand) 40%, transparent);
+    stroke-width: 2;
+}
+
+.bongo-desk-edge {
+    stroke: color-mix(in srgb, var(--lime) 70%, transparent);
+    stroke-width: 3;
+    stroke-linecap: round;
+}
+
+.bongo-hit {
+    fill: var(--lime);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* --- Pose --- */
+
+.bongo.is-left-down .bongo-paw--left,
+.bongo.is-right-down .bongo-paw--right {
+    transform: translateY(17px);
+}
+
+/* Badan ikut menghentak sedikit saat memukul */
+.bongo-body {
+    transition: transform 0.09s ease-out;
+}
+
+.bongo.is-left-down .bongo-body,
+.bongo.is-right-down .bongo-body {
+    transform: translateY(2.5px);
+}
+
+/* Kedua telapak turun bersamaan — mata jadi lebih semangat */
+.bongo.is-left-down.is-right-down .bongo-eye ellipse {
+    ry: 8.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bongo-paw,
+    .bongo-body {
+        transition: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .bongo { max-width: 220px; }
+    .bongo-wrap { margin-bottom: 0.85rem; }
+}
+
+/* ==========================================================================
+   27. PLAYFUL GEOMETRIC — BAHASA PERMUKAAN
+   Satu aturan memegang "permukaan" (garis tinta tebal + bayangan keras)
+   untuk semua kartu, sementara aturan masing-masing komponen di atas tetap
+   memegang tata letaknya. Dipisah begini supaya menambah kartu baru cukup
+   menempelkan selectornya di sini, tanpa menyalin nilai bayangan.
+   ========================================================================== */
+
+.project-card,
+.result-card,
+.info-card,
+.control-card,
+.metric,
+.step,
+.coverage,
+.readout,
+.chart-shell,
+.visualizer-shell,
+.channel-card,
+.live-stat,
+.target-row,
+.tip-box,
+.cta-panel,
+#keyboard-layout,
+#test-indicator,
+#monitor-test-navigation,
+#monitor-test-area,
+.toast {
+    border: var(--border-w) solid var(--ink);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--pop);
+}
+
+/* Elemen besar memakai bayangan lebih panjang agar hierarki tetap terasa */
+.cta-panel,
+.chart-shell,
+.visualizer-shell,
+#keyboard-layout,
+#monitor-test-area {
+    border-radius: var(--r-lg);
+    box-shadow: var(--pop-lg);
+}
+
+/* Kotak yang isinya gelap/berpola tetap memakai latar inset */
+.chart-shell,
+.visualizer-shell,
+#keyboard-layout {
+    background: var(--inset);
+}
+
+/* --- Kartu "stiker" bergoyang saat disentuh --- */
+.project-card,
+.info-card,
+.metric,
+.step {
+    transition: transform 0.3s var(--ease-pop), box-shadow 0.3s var(--ease-pop), border-color 0.2s;
+}
+
+.project-card:hover,
+.project-card:focus-within {
+    transform: rotate(-1deg) scale(1.02);
+    border-color: var(--ink);
+    box-shadow: 10px 10px 0 0 var(--brand);
+}
+
+/* Bayangan berwarna dirotasi antar kartu → efek confetti */
+.project-grid > .project-card:nth-child(2):hover { box-shadow: 10px 10px 0 0 var(--brand-2); }
+.project-grid > .project-card:nth-child(3):hover { box-shadow: 10px 10px 0 0 var(--pink); }
+.project-grid > .project-card:nth-child(4):hover { box-shadow: 10px 10px 0 0 var(--violet); }
+.project-grid > .project-card:nth-child(5):hover { box-shadow: 10px 10px 0 0 var(--teal); }
+
+.info-card:hover,
+.metric:hover {
+    transform: rotate(-1deg) scale(1.02);
+    box-shadow: var(--pop-hover);
+}
+
+.result-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pop-hover);
+}
+
+/* Badge bintang perlu menonjol keluar kartu; gambar tetap terpotong
+   karena .project-card__media punya overflow hidden sendiri. */
+.project-card {
+    overflow: visible;
+}
+
+/* Media kartu proyek: garis pemisah tegas, sudut mengikuti kartu */
+.project-card__media {
+    border-bottom: var(--border-w) solid var(--ink);
+    border-radius: calc(var(--r-md) - var(--border-w)) calc(var(--r-md) - var(--border-w)) 0 0;
+}
+
+.project-card__badge {
+    border: var(--border-w) solid var(--ink);
+    border-radius: var(--r-full);
+    background: var(--brand-2);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    color: var(--ink);
+    font-weight: 700;
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.project-card__tag {
+    border: 2px solid var(--ink);
+    border-radius: var(--r-full);
+    background: var(--muted);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.project-card__cta {
+    font-weight: 700;
+}
+
+/* --- Chip / badge jadi pil bergaris --- */
+.chip,
+.live-pill,
+.hero-badge,
+.phase-step,
+.preset-chip,
+.status-badge,
+#monitor-test-info,
+.live-unit-badge {
+    border: 2px solid var(--ink);
+    border-radius: var(--r-full);
+    font-weight: 700;
+}
+
+.preset-chip {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 2px 2px 0 0 var(--ink);
+    transition: transform 0.3s var(--ease-pop), box-shadow 0.3s var(--ease-pop), background 0.2s;
+}
+
+.preset-chip:hover {
+    background: var(--brand-2);
+    color: var(--ink);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 0 var(--ink);
+}
+
+.preset-chip.is-active {
+    background: var(--brand);
+    color: var(--brand-ink);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.phase-step.is-active {
+    background: var(--brand-2);
+    color: var(--ink);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.phase-step.is-done {
+    background: var(--brand);
+    color: var(--brand-ink);
+    box-shadow: none;
+}
+
+/* --- Tombol ikon (toggle tema) jadi stiker bundar --- */
+.icon-button {
+    width: 44px;
+    height: 44px;
+    border: var(--border-w) solid var(--ink);
+    border-radius: var(--r-full);
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--pop);
+    transition: transform 0.3s var(--ease-pop), box-shadow 0.3s var(--ease-pop), background 0.2s;
+}
+
+.icon-button:hover {
+    background: var(--brand-2);
+    color: var(--ink);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pop-hover);
+}
+
+.icon-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: var(--pop-active);
+}
+
+/* --- Navigasi utama --- */
+.nav-link {
+    border: 2px solid transparent;
+    border-radius: var(--r-full);
+    font-weight: 700;
+    transition: background 0.2s, color 0.2s, box-shadow 0.3s var(--ease-pop);
+}
+
+.nav-link:hover {
+    border-color: var(--ink);
+    background: var(--brand-2);
+    color: var(--ink);
+}
+
+.nav-link.is-active {
+    border-color: var(--ink);
+    background: var(--brand);
+    color: var(--brand-ink);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+/* --- Keycap jadi stiker tebal --- */
+.key {
+    border: 2px solid var(--ink);
+    border-bottom-width: 2px;
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 2px 2px 0 0 var(--ink);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    transition: transform 0.12s var(--ease-pop), box-shadow 0.12s, background 0.18s, color 0.18s;
+}
+
+.key-utility {
+    background: var(--muted);
+    color: var(--text-dim);
+}
+
+.key.pressed,
+.key.pressed.key-utility {
+    background: var(--brand-2);
+    border-color: var(--ink);
+    color: var(--ink);
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 var(--ink);
+}
+
+.key.tested,
+.key.tested.key-utility {
+    background: var(--brand);
+    border-color: var(--ink);
+    color: var(--brand-ink);
+    transform: none;
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.legend-swatch {
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+}
+.legend-swatch.is-idle { background: var(--surface); }
+.legend-swatch.is-active { background: var(--brand-2); box-shadow: none; }
+.legend-swatch.is-tested { background: var(--brand); border-color: var(--ink); }
+
+/* --- Input & slider: fokus memunculkan bayangan keras berwarna --- */
+.volume-slider {
+    height: 10px;
+    border: 2px solid var(--ink);
+    border-radius: var(--r-full);
+    background: var(--muted);
+}
+
+.volume-slider::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--ink);
+    background: var(--brand);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--ink);
+    background: var(--brand);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.volume-slider:focus-visible {
+    outline: none;
+    box-shadow: 4px 4px 0 0 var(--brand);
+}
+
+/* Fokus keyboard: kontras tinggi (garis tebal + bayangan keras) */
+:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* --- Meter & progress --- */
+.coverage-track,
+.speed-progress-bar {
+    height: 14px;
+    border: 2px solid var(--ink);
+    border-radius: var(--r-full);
+    background: var(--muted);
+}
+
+.coverage-fill {
+    background: var(--brand);
+    box-shadow: none;
+}
+
+.speed-progress-fill {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--brand) 0 10px,
+        color-mix(in srgb, var(--brand) 72%, #fff) 10px 20px
+    );
+    box-shadow: none;
+    animation: none;
+}
+
+/* --- Ikon dalam bentuk (aturan: ikon tidak melayang sendiri) --- */
+.panel-title .title-icon,
+.info-card-icon,
+.tip-box .tip-icon {
+    border: var(--border-w) solid var(--ink);
+    border-radius: var(--r-md);
+    background: var(--brand-2);
+    color: var(--ink);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.info-card-icon { background: var(--ic-color, var(--brand-2)); color: var(--ink); }
+
+/* Ikon bergoyang saat kartunya disentuh */
+.project-card:hover .project-card__badge svg,
+.info-card:hover .info-card-icon svg,
+.button-action:hover > svg:first-child {
+    animation: wiggle 0.5s ease-in-out;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    30%      { transform: rotate(8deg); }
+    60%      { transform: rotate(-8deg); }
+}
+
+/* --- Entrance: elemen "pop" masuk, bukan sekadar memudar --- */
+.tester-content {
+    animation: pop-in 0.45s var(--ease-pop) both;
+}
+
+@keyframes pop-in {
+    from { opacity: 0; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.view {
+    animation: pop-in 0.5s var(--ease-pop) both;
+}
+
+/* ==========================================================================
+   28. DEKORASI: CONFETTI, SQUIGGLE, MARQUEE
+   ========================================================================== */
+
+/* Bentuk primitif yang mengapung di belakang konten hero */
+.confetti {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti span {
+    position: absolute;
+    display: block;
+    border: var(--border-w) solid var(--ink);
+    opacity: 0.9;
+}
+
+.confetti .c-circle { border-radius: var(--r-full); }
+.confetti .c-pill { border-radius: var(--r-full); }
+.confetti .c-square { border-radius: 6px; }
+
+/* Lingkaran besar di belakang teks — signature layout hero */
+.confetti .c-hero {
+    top: -3rem;
+    left: 50%;
+    width: 26rem;
+    height: 26rem;
+    margin-left: -13rem;
+    border: 0;
+    border-radius: var(--r-full);
+    background: color-mix(in srgb, var(--brand-2) 42%, transparent);
+    opacity: 1;
+}
+
+.confetti .c-1 { top: 12%; left: 6%; width: 42px; height: 42px; background: var(--pink); }
+.confetti .c-2 { top: 62%; left: 3%; width: 64px; height: 26px; background: var(--violet); }
+.confetti .c-3 { top: 20%; right: 8%; width: 34px; height: 34px; background: var(--brand); }
+.confetti .c-4 { top: 70%; right: 5%; width: 46px; height: 46px; background: var(--brand-2); }
+.confetti .c-5 { top: 44%; right: 14%; width: 22px; height: 22px; background: var(--teal); }
+
+/* Segitiga dibuat dengan clip-path agar tetap bergaris tebal */
+.confetti .c-tri {
+    top: 34%;
+    left: 12%;
+    width: 38px;
+    height: 34px;
+    border: 0;
+    background: var(--violet);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+.landing-hero,
+.section-head,
+.cta-panel {
+    position: relative;
+}
+
+.landing-hero > *:not(.confetti),
+.cta-panel > *:not(.confetti) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Squiggle sebagai pembatas / garis bawah judul */
+.squiggle {
+    display: block;
+    width: 100%;
+    max-width: 180px;
+    height: 14px;
+    margin: 0.65rem auto 0;
+    color: var(--brand);
+}
+
+/* Pembatas bergelombang. Dibuat sebagai mask agar warnanya bisa
+   mengikuti token tema (data URI tidak mengenal currentColor). */
+.squiggle-divider {
+    display: block;
+    width: 100%;
+    height: 22px;
+    margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+    background-color: color-mix(in srgb, var(--ink) 28%, transparent);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='22' viewBox='0 0 40 22'%3E%3Cpath d='M0 11 Q 10 2 20 11 T 40 11' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+    mask-repeat: repeat-x;
+    mask-size: 40px 22px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='22' viewBox='0 0 40 22'%3E%3Cpath d='M0 11 Q 10 2 20 11 T 40 11' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: repeat-x;
+    -webkit-mask-size: 40px 22px;
+}
+
+/* Marquee kata kunci */
+.marquee {
+    position: relative;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding: 0.85rem 0;
+    border-top: var(--border-w) solid var(--ink);
+    border-bottom: var(--border-w) solid var(--ink);
+    background: var(--brand-2);
+    color: var(--ink);
+    overflow: hidden;
+}
+
+/* Dua grup identik yang bergeser -50% → perulangan tanpa jeda */
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 26s linear infinite;
+}
+
+.marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+    padding-right: 2.25rem;
+}
+
+.marquee-group span {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.25rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Pemisah berupa titik bergaris, bukan karakter teks */
+.marquee-group span::after {
+    content: '';
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--ink);
+    border-radius: var(--r-full);
+    background: var(--surface);
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+.marquee:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+/* Badge bintang "paling dipakai" pada kartu unggulan */
+.star-badge {
+    position: absolute;
+    top: -0.85rem;
+    right: -0.85rem;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 5.25rem;
+    height: 5.25rem;
+    rotate: 15deg;
+    border: var(--border-w) solid var(--ink);
+    background: var(--brand-2);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    clip-path: polygon(50% 0%, 61% 33%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 33%);
+}
+
+/* ==========================================================================
+   29. TIPOGRAFI PLAYFUL
+   ========================================================================== */
+
+.landing-title,
+.section-title,
+.hero-title,
+.cta-panel h2,
+.tools-head h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* Kata yang ditekankan dapat sorotan warna, bukan gradien */
+.landing-title .grad,
+.hero-title .grad {
+    position: relative;
+    display: inline-block;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--text);
+}
+
+.landing-title .grad::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0.08em;
+    z-index: -1;
+    height: 0.34em;
+    border-radius: var(--r-full);
+    background: var(--brand-2);
+}
+
+.metric-value {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-weight: 800;
+}
+
+.eyebrow,
+.readout-label,
+.control-label,
+.live-label,
+.result-label {
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   30. RESPONSIF — "pop" dikecilkan agar tidak makan ruang
+   ========================================================================== */
+
+@media (max-width: 640px) {
+    :root {
+        --pop: 2px 2px 0 0 var(--pop-ink);
+        --pop-hover: 3px 3px 0 0 var(--pop-ink);
+        --pop-active: 1px 1px 0 0 var(--pop-ink);
+        --pop-lg: 4px 4px 0 0 var(--pop-ink);
+    }
+
+    /* Bentuk mengapung disembunyikan agar tidak menimpa teks */
+    .confetti span:not(.c-hero) { display: none; }
+    .confetti .c-hero { width: 18rem; height: 18rem; margin-left: -9rem; }
+
+    .star-badge { width: 4.25rem; height: 4.25rem; font-size: 0.5rem; }
+    .marquee-track span { font-size: 0.85rem; }
+}
+
+/* Hormati preferensi mengurangi gerak: matikan pantulan & goyangan */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
+    .project-card:hover,
+    .info-card:hover,
+    .metric:hover { transform: none; }
+    .project-card:hover .project-card__badge svg,
+    .info-card:hover .info-card-icon svg,
+    .button-action:hover > svg:first-child { animation: none; }
 }

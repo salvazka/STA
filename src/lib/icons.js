@@ -12,6 +12,7 @@ import {
     ArrowUp,
     ArrowUpFromLine,
     AudioWaveform,
+    Cat,
     ChartLine,
     CheckCheck,
     ChevronLeft,
@@ -60,6 +61,7 @@ const iconSet = {
     ArrowUp,
     ArrowUpFromLine,
     AudioWaveform,
+    Cat,
     ChartLine,
     CheckCheck,
     ChevronLeft,
@@ -98,10 +100,19 @@ const iconSet = {
     Zap
 };
 
-/** Ubah semua <i data-lucide="..."> yang belum dirender menjadi SVG. */
+/** Ubah semua <i data-lucide="..."> yang belum dirender menjadi SVG.
+    Stroke dibuat tebal dengan ujung membulat sesuai sistem desain
+    "Playful Geometric" (chunky, friendly). */
 export function refreshIcons() {
     try {
-        createIcons({ icons: iconSet });
+        createIcons({
+            icons: iconSet,
+            attrs: {
+                'stroke-width': 2.5,
+                'stroke-linecap': 'round',
+                'stroke-linejoin': 'round'
+            }
+        });
     } catch (error) {
         console.warn('Gagal merender ikon:', error);
     }

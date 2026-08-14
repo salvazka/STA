@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serba Tester — Diagnostik Hardware &amp; Kecepatan Internet</title>
     <meta name="description" content="Konsol diagnostik berbasis browser: uji keyboard, monitor, speaker, informasi sistem, dan kecepatan internet realtime (ping, download, upload).">
-    <meta name="theme-color" content="#040a08">
+    <meta name="theme-color" content="#fffdf5">
     <meta name="color-scheme" content="dark light">
 
     <link rel="icon" type="image/svg+xml" href="/logo.svg">
@@ -58,6 +58,17 @@
     <div id="view-home" class="view">
 
         <section class="landing-hero">
+            <!-- Dekorasi: lingkaran besar di belakang teks + bentuk primitif -->
+            <div class="confetti" aria-hidden="true">
+                <span class="c-hero"></span>
+                <span class="c-circle c-1"></span>
+                <span class="c-pill c-2"></span>
+                <span class="c-circle c-3"></span>
+                <span class="c-circle c-4"></span>
+                <span class="c-square c-5"></span>
+                <span class="c-tri"></span>
+            </div>
+
             <span class="hero-badge">
                 <i data-lucide="zap" class="icon-xs" aria-hidden="true"></i>
                 Gratis · Tanpa instalasi · Jalan di browser
@@ -106,10 +117,26 @@
         <!-- ======================================================
              SECTION: MODUL (kartu proyek)
              ====================================================== -->
+        <!-- Marquee kata kunci -->
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <div class="marquee-group">
+                    <span>Keyboard</span><span>Monitor</span><span>Speaker</span><span>Ping</span><span>Download</span><span>Upload</span><span>Dead Pixel</span><span>GPU</span>
+                </div>
+                <div class="marquee-group">
+                    <span>Keyboard</span><span>Monitor</span><span>Speaker</span><span>Ping</span><span>Download</span><span>Upload</span><span>Dead Pixel</span><span>GPU</span>
+                </div>
+            </div>
+        </div>
+
         <section class="section" id="modules">
             <div class="section-head">
                 <span class="eyebrow">Modul</span>
                 <h2 class="section-title">Lima alat uji, satu tempat</h2>
+                <svg class="squiggle" viewBox="0 0 180 14" fill="none" aria-hidden="true">
+                    <path d="M3 8 Q 14 1 25 8 T 47 8 T 69 8 T 91 8 T 113 8 T 135 8 T 157 8 T 177 8"
+                          stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                </svg>
                 <p class="section-sub">
                     Setiap modul berdiri sendiri — pakai yang Anda butuhkan saja.
                     Klik kartu untuk langsung membukanya.
@@ -144,6 +171,7 @@
                 </article>
 
                 <article class="project-card" data-goto="speed">
+                    <span class="star-badge" aria-hidden="true">Paling<br>dipakai</span>
                     <div class="project-card__media">
                         <span class="project-card__badge">
                             <i data-lucide="gauge" aria-hidden="true"></i> Kecepatan
@@ -271,10 +299,17 @@
             </div>
         </section>
 
+        <div class="squiggle-divider" aria-hidden="true"></div>
+
         <!-- ======================================================
              CTA
              ====================================================== -->
         <div class="cta-panel">
+            <div class="confetti" aria-hidden="true">
+                <span class="c-circle c-1"></span>
+                <span class="c-pill c-2"></span>
+                <span class="c-circle c-4"></span>
+            </div>
             <h2>Siap memeriksa perangkat Anda?</h2>
             <p>
                 Tidak perlu daftar, tidak perlu unduh apa pun. Semua tes berjalan lokal di browser
@@ -364,6 +399,65 @@
                     </div>
                     <span class="coverage-value"><span id="coverage-value">0</span><span class="text-mute">%</span></span>
                     <span class="chip" id="coverage-count">0 / 0 tombol</span>
+                </div>
+
+                <!-- Bongo Cat: bereaksi terhadap tombol yang ditekan -->
+                <div id="bongo-wrap" class="bongo-wrap">
+                    <div id="bongo" class="bongo" aria-hidden="true">
+                        <svg class="bongo-svg" viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Meja -->
+                            <rect class="bongo-desk" x="0" y="160" width="320" height="50" rx="10"/>
+                            <line class="bongo-desk-edge" x1="0" y1="161" x2="320" y2="161"/>
+
+                            <!-- Kilatan hentakan -->
+                            <ellipse id="bongo-hit-left" class="bongo-hit" cx="96" cy="163" rx="22" ry="6"/>
+                            <ellipse id="bongo-hit-right" class="bongo-hit" cx="224" cy="163" rx="22" ry="6"/>
+
+                            <!-- Badan & kepala -->
+                            <g class="bongo-body">
+                                <path class="bongo-fur" d="M 104 168 Q 99 122 160 117 Q 221 122 216 168 Z"/>
+
+                                <path class="bongo-fur" d="M 122 58 L 130 26 L 156 48 Z"/>
+                                <path class="bongo-fur" d="M 198 58 L 190 26 L 164 48 Z"/>
+                                <path class="bongo-ear-inner" d="M 128 52 L 133 35 L 148 47 Z"/>
+                                <path class="bongo-ear-inner" d="M 192 52 L 187 35 L 172 47 Z"/>
+
+                                <ellipse class="bongo-fur" cx="160" cy="86" rx="52" ry="44"/>
+
+                                <g class="bongo-whisker">
+                                    <line x1="100" y1="90" x2="127" y2="93"/>
+                                    <line x1="98" y1="99" x2="127" y2="99"/>
+                                    <line x1="100" y1="108" x2="127" y2="105"/>
+                                    <line x1="220" y1="90" x2="193" y2="93"/>
+                                    <line x1="222" y1="99" x2="193" y2="99"/>
+                                    <line x1="220" y1="108" x2="193" y2="105"/>
+                                </g>
+
+                                <g class="bongo-eye">
+                                    <ellipse cx="141" cy="84" rx="5.5" ry="7"/>
+                                    <ellipse cx="179" cy="84" rx="5.5" ry="7"/>
+                                </g>
+                                <g class="bongo-eye-shine">
+                                    <circle cx="143" cy="81" r="1.9"/>
+                                    <circle cx="181" cy="81" r="1.9"/>
+                                </g>
+
+                                <path class="bongo-mouth" d="M 152 100 Q 156 106 160 100 Q 164 106 168 100"/>
+                            </g>
+
+                            <!-- Telapak kiri -->
+                            <g class="bongo-paw bongo-paw--left">
+                                <path class="bongo-arm" d="M 128 128 Q 108 130 99 140"/>
+                                <ellipse class="bongo-hand" cx="96" cy="141" rx="17" ry="11.5"/>
+                            </g>
+
+                            <!-- Telapak kanan -->
+                            <g class="bongo-paw bongo-paw--right">
+                                <path class="bongo-arm" d="M 192 128 Q 212 130 221 140"/>
+                                <ellipse class="bongo-hand" cx="224" cy="141" rx="17" ry="11.5"/>
+                            </g>
+                        </svg>
+                    </div>
                 </div>
 
                 <!-- Layout keyboard -->
@@ -459,6 +553,9 @@
                 <div class="button-row mt-3">
                     <button id="keyboard-reset" type="button" class="button-action btn-ghost">
                         <i data-lucide="refresh-cw" aria-hidden="true"></i> Reset Tes
+                    </button>
+                    <button id="bongo-toggle" type="button" class="button-action btn-ghost" aria-pressed="true">
+                        <i data-lucide="cat" aria-hidden="true"></i> Sembunyikan Bongo Cat
                     </button>
                 </div>
             </section>

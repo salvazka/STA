@@ -15,24 +15,58 @@ Aplikasi punya dua view yang dikelola router berbasis hash:
 Tautan dalam (deep link) berfungsi: `#/test/speed` langsung membuka modul kecepatan.
 Tombol maju/mundur browser juga tersinkron.
 
-## 🎨 Tampilan
+## 🎨 Sistem Desain — "Playful Geometric"
 
-Antarmuka memakai tema **"Diagnostic HUD"** dengan **palet hijau**: konsol gelap berona hijau,
-aksen neon, panel glassmorphism, dan readout angka monospace.
+Konsepnya **"grid stabil, dekorasi liar"**: konten tetap tenang dan terbaca, sementara
+sekelilingnya hidup dengan bentuk primitif dan pola. Referensinya Memphis Group (80-an),
+dibersihkan untuk layar modern.
 
-Palet memakai keluarga hijau analogus supaya elemen yang harus dibedakan tetap terbaca:
+**Mode terang ("kertas") adalah default.** Mode gelap tetap ada dengan bahasa visual yang sama —
+preferensi OS dihormati, dan pilihan pengguna disimpan di `localStorage`.
 
-| Token | Nilai (dark) | Peran |
-|-------|--------------|-------|
-| `--brand` | `#34d399` emerald | Aksen utama |
-| `--brand-2` / `--lime` | `#a3e635` lime | Pasangan gradien, tombol keyboard ditekan |
-| `--emerald` | `#4ade80` green | Sukses / status aktif |
-| `--teal` | `#2dd4bf` | Aksen dingin |
-| `--amber` | `#fbbf24` | Peringatan |
-| `--rose` | `#fb7185` | Galat |
+### Tanda tangan visual
 
-Amber dan rose sengaja dipertahankan di luar keluarga hijau karena keduanya menandakan
-peringatan dan galat — kalau ikut dihijaukan, sinyalnya hilang.
+| Elemen | Penerapan |
+|--------|-----------|
+| **Bayangan keras** | Offset tanpa blur (`4px 4px 0 0`) — kesan stiker / kertas potong |
+| **Garis chunky** | `2px solid` warna tinta pada semua kartu, tombol, keycap |
+| **Tombol pil** | Radius penuh; hover mengangkat, aktif menekan |
+| **Bentuk primitif** | Lingkaran, pil, kotak, segitiga sebagai dekorasi latar (`.confetti`) |
+| **Pola titik** | Latar titik dalam formasi rapi, bukan garis teknikal |
+| **Squiggle** | Garis bergelombang sebagai pembatas & garis bawah judul |
+| **Marquee** | Kata kunci bergulir tanpa henti |
+| **Gerak memantul** | Satu token easing `--ease-pop` dipakai di 23 tempat |
+
+### Token warna
+
+Hijau dipertahankan sebagai warna brand, sedangkan violet/pink/amber dipakai **rotasional**
+untuk dekorasi sehingga tetap mendapat efek "confetti" yang diminta sistem desain.
+
+| Token | Terang | Gelap | Peran |
+|-------|--------|-------|-------|
+| `--bg` | `#fffdf5` krem | `#10141c` | Latar kertas |
+| `--ink` | `#1e293b` | `#04070c` | Garis & bayangan keras |
+| `--brand` | `#15a34a` | `#34d399` | Aksi utama |
+| `--brand-2` | `#fbbf24` amber | sama | Pasangan brand, isian hover |
+| `--violet` `--pink` `--teal` | — | — | Dekorasi rotasional |
+| `--amber` `--rose` | — | — | Peringatan & galat |
+
+Amber dan rose sengaja dipertahankan sebagai warna status — kalau ikut jadi dekoratif,
+sinyal peringatan/galat jadi hilang.
+
+### Tipografi
+
+- **Judul**: `Outfit` (geometris, sudut membulat) — ExtraBold 800
+- **Teks**: `Plus Jakarta Sans` — Regular/Medium
+- **Angka**: `JetBrains Mono` — readout diagnostik tetap monospace agar mudah dibandingkan
+
+### Aksesibilitas
+
+- Kontras teks slate-800 di atas krem/putih memenuhi AAA
+- Warna tidak pernah jadi satu-satunya penanda — selalu ada label teks atau bentuk
+- Fokus keyboard: garis tebal kontras tinggi + bayangan keras
+- `prefers-reduced-motion` mematikan pantulan, goyangan, dan marquee
+- Semua tombol minimal 44px (52px untuk ukuran besar) agar nyaman disentuh
 
 - **Dark mode** sebagai default, lengkap dengan **light mode** (tombol di kanan atas atau `Alt` + `T`)
 - Preferensi tema mengikuti setelan sistem pada kunjungan pertama, lalu disimpan di `localStorage`
@@ -45,7 +79,8 @@ peringatan dan galat — kalau ikut dihijaukan, sinyalnya hilang.
 ### 🖥️ Tes Hardware
 
 - **Tes Keyboard** — layout penuh 104 tombol (numpad, `PrtSc`, `ScrLk`, `Pause`, `Menu`) dengan feedback
-  realtime, meter **cakupan** dalam persen, readout kode tombol terakhir, dan tombol reset
+  realtime, meter **cakupan** dalam persen, readout kode tombol terakhir, dan tombol reset.
+  Dilengkapi **Bongo Cat** yang telapaknya menghentak mengikuti tombol yang ditekan (bisa disembunyikan)
 - **Tes Monitor** — 12 pola untuk memeriksa dead/stuck pixel, backlight bleed, banding, dan gradien.
   Navigasi manual penuh serta mode layar penuh
 - **Tes Audio** — osilator Web Audio dengan kontrol volume, frekuensi (200–2000 Hz) + preset,

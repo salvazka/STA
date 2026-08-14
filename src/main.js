@@ -13,7 +13,8 @@ import { showToast } from './lib/toast.js';
 import {
     handleKeyboardKeydown,
     handleKeyboardKeyup,
-    mountKeyboard
+    mountKeyboard,
+    releaseKeyboardState
 } from './modules/keyboard.js';
 
 import {
@@ -73,6 +74,7 @@ export function setActiveView(view, { tab, silent = false } = {}) {
     if (activeView === 'tools' && view !== 'tools') {
         stopSpeakerTest({ silent: true });
         abortSpeedTest();
+        releaseKeyboardState();
         if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     }
 
@@ -113,6 +115,10 @@ function applyHash({ silent = true } = {}) {
 
 export function setActiveTab(tab, { silent = false } = {}) {
     if (!TABS.includes(tab)) return;
+
+    // Lepaskan state tombol yang masih ditahan sebelum meninggalkan modul,
+    // karena keyup-nya akan jatuh di luar handler tes keyboard.
+    if (activeTab === 'keyboard' && tab !== 'keyboard') releaseKeyboardState();
 
     // Bersihkan aktivitas modul yang ditinggalkan
     if (activeTab === 'audio' && tab !== 'audio') stopSpeakerTest({ silent: true });
