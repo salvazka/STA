@@ -8,7 +8,7 @@
    Mode gelap tetap tersedia dengan bahasa visual yang sama.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400..800&family=Plus+Jakarta+Sans:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 
 /* ==========================================================================
    1. DESIGN TOKENS
@@ -76,9 +76,9 @@
     --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* --- Tipografi --- */
-    --font-display: 'Outfit', system-ui, sans-serif;
-    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+    --font-display: 'Josefin Sans', sans-serif;
+    --font-body: 'Josefin Sans', sans-serif;
+    --font-mono: 'Josefin Sans', sans-serif;
 
     --nav-h: 68px;
 }
