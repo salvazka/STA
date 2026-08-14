@@ -350,27 +350,36 @@ kbd, .kbd {
     width: 2.9rem;
     height: 2.9rem;
     flex: none;
-    filter: drop-shadow(0 6px 16px rgba(52, 211, 153, 0.35));
+    object-fit: cover;
+    border-radius: var(--r-sm);
+    border: var(--border-w) solid var(--border-strong);
+    box-shadow: var(--pop);
 }
 
 .brand-text {
     display: flex;
     flex-direction: column;
     line-height: 1.15;
+    gap: 0.4rem;
 }
 
 .brand-name {
+    display: inline-flex;
+    align-items: center;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.06rem;
     letter-spacing: -0.01em;
+    color: #ffffff;
+    background: var(--brand);
+    padding: 0.28rem 0.7rem;
+    border-radius: var(--r-full);
+    border: var(--border-w) solid var(--border-strong);
+    box-shadow: var(--pop);
 }
 
 .brand-name .brand-accent {
-    background: linear-gradient(100deg, var(--brand), var(--brand-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #fbbf24;
 }
 
 .brand-tag {
@@ -379,6 +388,7 @@ kbd, .kbd {
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-mute);
+    margin-top: 0.15rem;
 }
 
 .topbar-actions {
